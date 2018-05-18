@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--网络异常显示容器 -->
+    <item name="view_loading_container" type="id" />
+
+</resources>
