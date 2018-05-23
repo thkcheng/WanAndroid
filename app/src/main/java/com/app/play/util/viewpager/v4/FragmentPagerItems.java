@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.starry.douban.util.viewpager.v4;
+package com.app.play.util.viewpager.v4;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 
-import com.starry.douban.util.viewpager.PagerItems;
+import com.app.play.util.viewpager.PagerItems;
+
 
 public class FragmentPagerItems extends PagerItems<FragmentPagerItem> {
 

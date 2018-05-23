@@ -1,4 +1,4 @@
-package com.ylpw.ticketapp.ui.adapter;
+package com.app.play.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,30 +7,26 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ylpw.ticketapp.widget.ContainerViewPager;
-import com.ylpw.ticketapp.widget.MyViewPager;
+import com.app.play.widget.NewViewPager;
 
 import java.util.List;
+
 /**
- * Created by liuyi
+ * Created by thkcheng
  * 为ViewPager添加布局（Fragment），绑定和处理fragments和viewpager之间的逻辑关系
  * 可保持Fragment切换状态
  */
-public class MainViewPagerAdapter extends PagerAdapter implements MyViewPager.OnPageChangeListener {
+public class MainViewPagerAdapter extends PagerAdapter {
     private List<Fragment> fragments; // 每个Fragment对应一个Page
     private FragmentManager fragmentManager;
-    private ContainerViewPager viewPager; // viewPager对象
+    private NewViewPager viewPager; // viewPager对象
     private int currentPageIndex = 0; // 当前page索引（切换之前）
 
-    private OnExtraPageChangeListener onExtraPageChangeListener; // ViewPager切换页面时的额外功能添加接口
-
-    public MainViewPagerAdapter(FragmentManager fragmentManager, ContainerViewPager viewPager, List<Fragment> fragments) {
+    public MainViewPagerAdapter(FragmentManager fragmentManager, NewViewPager viewPager, List<Fragment> fragments) {
         this.fragments = fragments;
         this.fragmentManager = fragmentManager;
         this.viewPager = viewPager;
         this.viewPager.setAdapter(this);
-
-        this.viewPager.setOnPageChangeListener(this);
     }
 
     @Override
@@ -69,68 +65,5 @@ public class MainViewPagerAdapter extends PagerAdapter implements MyViewPager.On
         }
 
         return fragment.getView();
-    }
-
-    /**
-     * 当前page索引（切换之前）
-     *
-     * @return
-     */
-    public int getCurrentPageIndex() {
-        return currentPageIndex;
-    }
-
-    public OnExtraPageChangeListener getOnExtraPageChangeListener() {
-        return onExtraPageChangeListener;
-    }
-
-    /**
-     * 设置页面切换额外功能监听器
-     *
-     * @param onExtraPageChangeListener
-     */
-    public void setOnExtraPageChangeListener(OnExtraPageChangeListener onExtraPageChangeListener) {
-        this.onExtraPageChangeListener = onExtraPageChangeListener;
-    }
-
-    @Override
-    public void onPageScrolled(int i, float v, int i2) {
-        if (null != onExtraPageChangeListener) { // 如果设置了额外功能接口
-            onExtraPageChangeListener.onExtraPageScrolled(i, v, i2);
-        }
-    }
-
-    @Override
-    public void onPageSelected(int i) {
-        fragments.get(currentPageIndex).onPause(); // 调用切换前Fargment的onPause()
-        if (fragments.get(i).isAdded()) {
-            fragments.get(i).onResume(); // 调用切换后Fargment的onResume()
-        }
-        currentPageIndex = i;
-
-        if (null != onExtraPageChangeListener) { // 如果设置了额外功能接口
-            onExtraPageChangeListener.onExtraPageSelected(i);
-        }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int i) {
-        if (null != onExtraPageChangeListener) { // 如果设置了额外功能接口
-            onExtraPageChangeListener.onExtraPageScrollStateChanged(i);
-        }
-    }
-
-    /**
-     * page切换额外功能接口
-     */
-    public static class OnExtraPageChangeListener {
-        public void onExtraPageScrolled(int i, float v, int i2) {
-        }
-
-        public void onExtraPageSelected(int i) {
-        }
-
-        public void onExtraPageScrollStateChanged(int i) {
-        }
     }
 }

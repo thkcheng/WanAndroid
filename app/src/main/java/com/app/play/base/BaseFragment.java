@@ -12,10 +12,19 @@ import com.app.play.R;
 import com.app.play.ui.IBaseView;
 import com.app.play.widget.LoadingDataLayout;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public abstract class BaseFragment extends Fragment implements IBaseActivity, IBaseView {
 
     private boolean isSuccess;
 
+    /**
+     * 网络请求各种状态显示容器
+     * <p>Required view 'view_loading_container' with ID 2131427348 for field 'mLoadingDataLayout' was not found. If this view is optional add '@Nullable' (fields) or '@Optional' (methods) annotation.
+     */
+    @Nullable
+    @BindView(R.id.view_loading_container)
     protected LoadingDataLayout mLoadingDataLayout;
 
     @Override
@@ -26,6 +35,7 @@ public abstract class BaseFragment extends Fragment implements IBaseActivity, IB
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResID(), container, false);
+        ButterKnife.bind(this, view);
         return view;
     }
 

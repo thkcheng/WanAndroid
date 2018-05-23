@@ -1,18 +1,20 @@
 apply plugin: 'com.android.application'
 
-android {
+//需要在项目根目录的build.gradle 添加 apply from: 'root.gradle'
+def androidCode = rootProject.ext.android
 
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+android {
+    compileSdkVersion androidCode.compileSdkVersion
+    buildToolsVersion androidCode.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.app.play"
-        minSdkVersion 25
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId androidCode.applicationId
+        minSdkVersion androidCode.minSdkVersion
+        targetSdkVersion androidCode.targetSdkVersion
+        versionCode androidCode.versionCode
+        versionName androidCode.versionName
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -21,11 +23,22 @@ android {
     }
 }
 
+def libList = rootProject.ext.dependencies
+
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //android support
+    compile libList.appcompat
+    compile libList.cardView
+    compile libList.palette
+
+    //other-lib
+    compile libList.butterknife
+    annotationProcessor libList.butterknifeCompiler
+    compile libList.bannerView
+
+//    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

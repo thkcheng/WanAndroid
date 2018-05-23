@@ -1,4 +1,5 @@
 package com.app.play.widget;
+
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
@@ -9,7 +10,6 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
-import android.support.v4.view.KeyEventCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.VelocityTrackerCompat;
@@ -38,7 +38,7 @@ import java.util.Comparator;
 /**
  * 解决ViewPager预加载问题
  */
-public class MyViewPager extends ViewGroup {
+public class NewViewPager extends ViewGroup {
     private static final String TAG = "LazyViewPager";
     private static final boolean DEBUG = false;
 
@@ -203,12 +203,12 @@ public class MyViewPager extends ViewGroup {
         }
     }
 
-    public MyViewPager(Context context) {
+    public NewViewPager(Context context) {
         super(context);
         initViewPager();
     }
 
-    public MyViewPager(Context context, AttributeSet attrs) {
+    public NewViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         initViewPager();
     }
@@ -283,8 +283,8 @@ public class MyViewPager extends ViewGroup {
 
     /**
      * Set the currently selected page. If the ViewPager has already been through its first
-     * layout there will be a smooth animated transition between the current item and the
-     * specified item.
+     * layout there will be a smooth animated transition between the current item_fragment_home_banner and the
+     * specified item_fragment_home_banner.
      *
      * @param item Item index to select
      */
@@ -298,7 +298,7 @@ public class MyViewPager extends ViewGroup {
      * Set the currently selected page.
      *
      * @param item         Item index to select
-     * @param smoothScroll True to smoothly scroll to the new item, false to transition immediately
+     * @param smoothScroll True to smoothly scroll to the new item_fragment_home_banner, false to transition immediately
      */
     public void setCurrentItem(int item, boolean smoothScroll) {
         mPopulatePending = false;
@@ -555,7 +555,7 @@ public class MyViewPager extends ViewGroup {
                 needPopulate = true;
 
                 if (mCurItem == ii.position) {
-                    // Keep the current item in the valid range
+                    // Keep the current item_fragment_home_banner in the valid range
                     newCurrItem = Math.max(0, Math.min(mCurItem, mAdapter.getCount() - 1));
                 }
                 continue;
@@ -563,7 +563,7 @@ public class MyViewPager extends ViewGroup {
 
             if (ii.position != newPos) {
                 if (ii.position == mCurItem) {
-                    // Our current item changed position. Follow it.
+                    // Our current item_fragment_home_banner changed position. Follow it.
                     newCurrItem = newPos;
                 }
 
@@ -625,8 +625,8 @@ public class MyViewPager extends ViewGroup {
                 i--;
                 mAdapter.destroyItem(this, ii.position, ii.object);
             } else if (lastPos < endPos && ii.position > startPos) {
-                // The next item is outside of our range, but we have a gap
-                // between it and the last item where we want to have a page
+                // The next item_fragment_home_banner is outside of our range, but we have a gap
+                // between it and the last item_fragment_home_banner where we want to have a page
                 // shown.  Fill in the gap.
                 lastPos++;
                 if (lastPos < startPos) {
@@ -1518,9 +1518,9 @@ public class MyViewPager extends ViewGroup {
                     handled = arrowScroll(FOCUS_RIGHT);
                     break;
                 case KeyEvent.KEYCODE_TAB:
-                    if (KeyEventCompat.hasNoModifiers(event)) {
+                    if (event.hasNoModifiers()) {
                         handled = arrowScroll(FOCUS_FORWARD);
-                    } else if (KeyEventCompat.hasModifiers(event, KeyEvent.META_SHIFT_ON)) {
+                    } else if (event.hasModifiers(KeyEvent.META_SHIFT_ON)) {
                         handled = arrowScroll(FOCUS_BACKWARD);
                     }
                     break;

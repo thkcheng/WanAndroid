@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#959595</color>
     <color name="activity_bg">#EFF0F3</color>
 </resources>

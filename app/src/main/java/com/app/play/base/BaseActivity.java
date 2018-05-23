@@ -8,14 +8,24 @@ import com.app.play.R;
 import com.app.play.ui.IBaseView;
 import com.app.play.widget.LoadingDataLayout;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public abstract class BaseActivity extends AppCompatActivity implements IBaseActivity, IBaseView {
 
+    /**
+     * 网络请求各种状态显示容器
+     */
+    @Nullable
+    @BindView(R.id.view_loading_container)
     protected LoadingDataLayout mLoadingDataLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(getLayoutResID());
+        ButterKnife.bind(this);//必须在setContentView()之后调用
 
         initLoadingDataLayout();
 
@@ -24,7 +34,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
     }
 
     private void initLoadingDataLayout() {
-        mLoadingDataLayout = findViewById(R.id.view_loading_container);
         if (mLoadingDataLayout != null) {
             mLoadingDataLayout.setRetryListener(new LoadingDataLayout.OnRetryListener() {
                 @Override

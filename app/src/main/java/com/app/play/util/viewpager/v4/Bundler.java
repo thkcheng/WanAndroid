@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.starry.douban.util.viewpager.v4;
+package com.app.play.util.viewpager.v4;
 
 import android.annotation.TargetApi;
 import android.os.Bundle;

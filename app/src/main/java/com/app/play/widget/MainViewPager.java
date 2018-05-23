@@ -5,11 +5,11 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * Created by liuyi on 2017/3/7.
+ * 禁止滑动
  */
+public class MainViewPager extends NewViewPager {
 
-public class ContainerViewPager extends NewViewPager {
-    public ContainerViewPager(Context context, AttributeSet attrs) {
+    public MainViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
