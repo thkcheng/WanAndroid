@@ -20,6 +20,14 @@ ext {
 
             "butterknife"            : "com.jakewharton:butterknife:8.8.1",
             "butterknifeCompiler"    : "com.jakewharton:butterknife-compiler:8.8.1",
-            "bannerView"             : "com.github.pinguo-zhouwei:MZBannerView:v2.0.1"
+            "bannerView"             : "com.github.pinguo-zhouwei:MZBannerView:v2.0.1",
+
+            "retrofit"               : "com.squareup.retrofit2:retrofit:2.4.0",
+            "rxjava2"                : "io.reactivex.rxjava2:rxjava:2.1.14",
+            "rxandroid"              : "io.reactivex.rxjava2:rxandroid:2.0.2",
+            "okhttp3"                : "com.squareup.okhttp3:okhttp:3.10.0",
+            "logging_interceptor"    : "com.squareup.okhttp3:logging-interceptor:3.8.1",
+            "converter_gson"         : "com.squareup.retrofit2:converter-gson:2.3.0",
+            "adapter_rxjava2"        : "com.squareup.retrofit2:adapter-rxjava2:2.3.0",
     ]
 }

@@ -26,16 +26,24 @@ android {
 def libList = rootProject.ext.dependencies
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    api fileTree(include: ['*.jar'], dir: 'libs')
     //android support
-    compile libList.appcompat
-    compile libList.cardView
-    compile libList.palette
+    api libList.appcompat
+    api libList.cardView
+    api libList.palette
 
     //other-lib
-    compile libList.butterknife
+    api libList.butterknife
     annotationProcessor libList.butterknifeCompiler
-    compile libList.bannerView
+    api libList.bannerView
+
+    api libList.retrofit
+    api libList.rxjava2
+    api libList.rxandroid
+    api libList.okhttp3
+    api libList.logging_interceptor
+    api libList.converter_gson
+    api libList.adapter_rxjava2
 
 //    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 //    testImplementation 'junit:junit:4.12'

@@ -7,9 +7,16 @@ import com.app.play.base.BaseApp;
 
 public class App extends Application{
 
+    private static App mApp;
+    public static App getInstance() {
+        return mApp;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        mApp = this;
         BaseApp.getInstance().onCreate(this);
     }
 
