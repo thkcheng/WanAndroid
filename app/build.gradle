@@ -35,7 +35,6 @@ dependencies {
     //other-lib
     api libList.butterknife
     annotationProcessor libList.butterknifeCompiler
-    api libList.bannerView
 
     api libList.retrofit
     api libList.rxjava2

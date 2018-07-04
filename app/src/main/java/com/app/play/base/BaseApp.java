@@ -56,7 +56,7 @@ public class BaseApp {
      * 退出应用
      */
     public void exitApp() {
-        lifeCallback.finishAll();
+        lifeCallback.finishAllActivity();
     }
 
     /**

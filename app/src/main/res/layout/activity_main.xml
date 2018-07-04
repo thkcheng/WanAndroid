@@ -35,26 +35,26 @@
                 android:id="@+id/bottomTab1"
                 style="@style/BottomTabStyle"
                 android:checked="true"
-                android:drawableTop="@drawable/selector_bottom_tab01"
-                android:text="首页" />
-
+                android:drawableTop="@mipmap/icon_home"
+                android:text="@string/tab_home" />
+            <!--android:drawableTop="@drawable/selector_bottom_tab01"-->
             <RadioButton
                 android:id="@+id/bottomTab2"
                 style="@style/BottomTabStyle"
-                android:drawableTop="@drawable/selector_bottom_tab02"
-                android:text="体系" />
+                android:drawableTop="@mipmap/icon_tixi"
+                android:text="@string/tab_system" />
 
             <RadioButton
                 android:id="@+id/bottomTab3"
                 style="@style/BottomTabStyle"
-                android:drawableTop="@drawable/selector_bottom_tab03"
-                android:text="导航" />
+                android:drawableTop="@mipmap/icon_navi"
+                android:text="@string/tab_navi" />
 
             <RadioButton
                 android:id="@+id/bottomTab4"
                 style="@style/BottomTabStyle"
-                android:drawableTop="@drawable/selector_bottom_tab04"
-                android:text="项目" />
+                android:drawableTop="@mipmap/icon_setting"
+                android:text="@string/tab_setting" />
 
         </RadioGroup>
 

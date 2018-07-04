@@ -20,7 +20,6 @@ ext {
 
             "butterknife"            : "com.jakewharton:butterknife:8.8.1",
             "butterknifeCompiler"    : "com.jakewharton:butterknife-compiler:8.8.1",
-            "bannerView"             : "com.github.pinguo-zhouwei:MZBannerView:v2.0.1",
 
             "retrofit"               : "com.squareup.retrofit2:retrofit:2.4.0",
             "rxjava2"                : "io.reactivex.rxjava2:rxjava:2.1.14",

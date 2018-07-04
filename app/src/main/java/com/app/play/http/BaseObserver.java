@@ -1,7 +1,6 @@
 package com.app.play.http;
 
 import com.app.play.entity.BaseEntity;
-import com.app.play.entity.ResultEntity;
 import com.app.play.util.HttpUtil;
 import com.app.play.util.Preconditions;
 
@@ -20,7 +19,7 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
             Preconditions.checkNotNull(value);
 
             // 2. check result code
-            HttpUtil.checkResultCode(value.getResult().getCodeValue(), value.getResult().getMessage());
+            HttpUtil.checkResultCode(value.getErrorCode(), value.getErrorMsg());
 
             // 3. call result method
             onSuccees(value.getData());
@@ -28,7 +27,7 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
         } catch (Exception e) {
             e.printStackTrace();
             NetworkException netEx = NetworkException.newException(e);
-            onCodeError(new ResultEntity(netEx.getErrorCode(), Errors.Message.SERVER_ERROR));
+            onCodeError(netEx.getErrorCode(), Errors.Message.SERVER_ERROR);
         }
 
     }
@@ -60,9 +59,10 @@ public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
     /**
      * 返回成功了,但是code错误
      *
-     * @param result
+     * @param errorCode
+     * @param errorMsg
      */
-    public abstract void onCodeError(ResultEntity result);
+    public abstract void onCodeError(int errorCode, String errorMsg);
 
     /**
      * 接口执行完成

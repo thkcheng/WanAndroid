@@ -4,7 +4,6 @@ import android.animation.ArgbEvaluator;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
@@ -13,15 +12,13 @@ import android.widget.RadioGroup;
 
 import com.app.play.R;
 import com.app.play.base.BaseActivity;
-import com.app.play.ui.adapter.MainViewPagerAdapter;
 import com.app.play.ui.fragment.HomeFragment;
 import com.app.play.ui.fragment.NavigationFragment;
-import com.app.play.ui.fragment.ProjectFragment;
+import com.app.play.ui.fragment.SettingFragment;
 import com.app.play.ui.fragment.SystemFragment;
 import com.app.play.util.viewpager.v4.FragmentPagerItem;
 import com.app.play.util.viewpager.v4.FragmentPagerItemAdapter;
 import com.app.play.util.viewpager.v4.FragmentPagerItems;
-import com.app.play.widget.NewViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +40,7 @@ public class MainActivity extends BaseActivity {
     RadioButton rbtnNavigation;
 
     @BindView(R.id.bottomTab4)
-    RadioButton rbtnProject;
+    RadioButton rbtnSetting;
 
     @BindView(R.id.radioGroup_main)
     RadioGroup radioGroupMain;
@@ -76,7 +73,7 @@ public class MainActivity extends BaseActivity {
         pages.add(FragmentPagerItem.of(HomeFragment.class.getSimpleName(), HomeFragment.class));
         pages.add(FragmentPagerItem.of(SystemFragment.class.getSimpleName(), SystemFragment.class));
         pages.add(FragmentPagerItem.of(NavigationFragment.class.getSimpleName(), NavigationFragment.class));
-        pages.add(FragmentPagerItem.of(ProjectFragment.class.getSimpleName(), ProjectFragment.class));
+        pages.add(FragmentPagerItem.of(SettingFragment.class.getSimpleName(), SettingFragment.class));
 
         mViewPager.setOffscreenPageLimit(3);
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), pages);
@@ -84,7 +81,6 @@ public class MainActivity extends BaseActivity {
 
         initTab();
     }
-
 
 
     @Override
@@ -142,18 +138,18 @@ public class MainActivity extends BaseActivity {
      * 初始化tab
      */
     private void initTab() {
-        colorSelect = ContextCompat.getColor(this, R.color.colorBlack);
+        colorSelect = ContextCompat.getColor(this, R.color.colorBlue);
         colorUnSelect = ContextCompat.getColor(this, R.color.colorGray);
 
         tabViews.add(rbtnHome);
         tabViews.add(rbtnSystem);
         tabViews.add(rbtnNavigation);
-        tabViews.add(rbtnProject);
+        tabViews.add(rbtnSetting);
 
-        tabDrawables.add(ContextCompat.getDrawable(this, R.drawable.selector_bottom_tab01).mutate());
-        tabDrawables.add(ContextCompat.getDrawable(this, R.drawable.selector_bottom_tab02).mutate());
-        tabDrawables.add(ContextCompat.getDrawable(this, R.drawable.selector_bottom_tab03).mutate());
-        tabDrawables.add(ContextCompat.getDrawable(this, R.drawable.selector_bottom_tab04).mutate());
+        tabDrawables.add(ContextCompat.getDrawable(this, R.mipmap.icon_home).mutate());
+        tabDrawables.add(ContextCompat.getDrawable(this, R.mipmap.icon_tixi).mutate());
+        tabDrawables.add(ContextCompat.getDrawable(this, R.mipmap.icon_navi).mutate());
+        tabDrawables.add(ContextCompat.getDrawable(this, R.mipmap.icon_setting).mutate());
     }
 
     /**
@@ -200,6 +196,7 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 修改切换tab的显示
+     *
      * @param selectIndex
      */
     private void setTabSelect(int selectIndex) {

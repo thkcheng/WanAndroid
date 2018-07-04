@@ -1,22 +1,21 @@
 package com.app.play.entity;
 
 /**
- * Created by xiexucheng on 17/2/17.
+ * Created by thkcheng on 18/7/4.
  */
 
 public class BaseEntity<T> {
 
-    ResultEntity result;
+//    {
+//        "data": ...,
+//        "errorCode": 0,
+//        "errorMsg": ""
+//    }
+//    所有的返回结构均为上述，其中errorCode如果为负数则认为错误，此时errorMsg会包含错误信息。data为Object，返回数据根据不同的接口而变化。
+
     T data;
-
-
-    public ResultEntity getResult() {
-        return result;
-    }
-
-    public void setResult(ResultEntity result) {
-        this.result = result;
-    }
+    int errorCode;
+    String errorMsg;
 
     public T getData() {
         return data;
@@ -24,5 +23,21 @@ public class BaseEntity<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 }
