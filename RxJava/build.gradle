@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+def androidCode = rootProject.ext.android
+def libList = rootProject.ext.dependencies
+
+android {
+    compileSdkVersion androidCode.compileSdkVersion
+    buildToolsVersion androidCode.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion androidCode.minSdkVersion
+        targetSdkVersion androidCode.targetSdkVersion
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api libList.rxjava2
+    api libList.rxandroid
+    api libList.adapter_rxjava2
+}

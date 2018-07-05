@@ -17,6 +17,6 @@ public class Apis {
      * 首页文章列表
      * GET
      */
-    public static String WAN_HOME_LIST = BASE_URL + "article/list/0/json";
+    public static String WAN_HOME_LIST = BASE_URL + "article/list/1/json";
 
 }

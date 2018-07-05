@@ -1,10 +1,10 @@
 package com.app.play.model;
 
 /**
- * Created by thkcheng on 2018/7/5.
+ * Created by thkcheng on 18/7/4.
  */
 
-public class BaseModel {
+public class TBaseModel<T> {
 
     /**
      *
@@ -18,8 +18,17 @@ public class BaseModel {
      *
      */
 
+    T data;
     int errorCode;
     String errorMsg;
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 
     public int getErrorCode() {
         return errorCode;
@@ -36,5 +45,4 @@ public class BaseModel {
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
     }
-
 }

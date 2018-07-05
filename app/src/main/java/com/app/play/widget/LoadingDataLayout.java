@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.play.R;
+import com.app.play.util.AnimationController;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
