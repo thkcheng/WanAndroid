@@ -12,11 +12,9 @@ public class NavigationFragment extends BaseFragment {
 
     @Override
     public void initData() {
-
     }
 
     @Override
     public void setListener() {
-
     }
 }

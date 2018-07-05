@@ -38,8 +38,6 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.radioGroup_main)
     RadioGroup radioGroupMain;
 
-    private String[] titles = new String[]{"首页", "体系", "导航", "设置"};
-
     private ArgbEvaluatorUtil argbEvaluatorUtil = ArgbEvaluatorUtil.get();
 
     @Override

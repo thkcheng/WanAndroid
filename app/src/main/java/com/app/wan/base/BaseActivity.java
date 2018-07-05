@@ -5,13 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.app.wan.R;
-import com.app.wan.ui.IBaseView;
 import com.app.wan.widget.LoadingDataLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public abstract class BaseActivity extends AppCompatActivity implements IBaseActivity, IBaseView {
+public abstract class BaseActivity extends AppCompatActivity implements IBaseUI {
 
     /**
      * 网络请求各种状态显示容器
@@ -29,9 +28,18 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
 
         initLoadingDataLayout();
 
-        initData();
-        setListener();
+        //保证onCreate方法第一时间执行完，显示UI界面
+        //如果加载数据的方法直接在onCreate里执行，可能会导致UI界面不能及时显示
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initData();
+                setListener();
+            }
+        });
     }
+
+    public void setListener() {}
 
     private void initLoadingDataLayout() {
         if (mLoadingDataLayout != null) {
@@ -54,12 +62,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseAct
             mLoadingDataLayout.setStatus(status);
     }
 
-    @Override
     public void showLoading() {
         showLoadingStatus(LoadingDataLayout.STATUS_LOADING);
     }
 
-    @Override
     public void hideLoading(int status) {
         switch (status) {
             case LoadingDataLayout.STATUS_SUCCESS:

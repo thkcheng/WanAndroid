@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.wan.R;
-import com.app.wan.ui.IBaseView;
 import com.app.wan.widget.LoadingDataLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public abstract class BaseFragment extends Fragment implements IBaseActivity, IBaseView {
+public abstract class BaseFragment extends Fragment implements IBaseUI {
 
     private boolean isSuccess;
 
@@ -49,6 +48,8 @@ public abstract class BaseFragment extends Fragment implements IBaseActivity, IB
         setListener();
     }
 
+    public void setListener() {}
+
     /**
      * @param view
      */
@@ -75,12 +76,10 @@ public abstract class BaseFragment extends Fragment implements IBaseActivity, IB
         if (LoadingDataLayout.STATUS_SUCCESS == networkStatus) isSuccess = true;
     }
 
-    @Override
     public void showLoading() {
         showLoadingStatus(LoadingDataLayout.STATUS_LOADING);
     }
 
-    @Override
     public void hideLoading(int status) {
         switch (status) {
             case LoadingDataLayout.STATUS_SUCCESS:
