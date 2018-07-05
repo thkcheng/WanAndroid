@@ -1,7 +1,7 @@
 package com.app.play.util;
 
-import com.app.play.http.Errors;
-import com.app.play.http.NetworkException;
+import com.app.play.http.error.Errors;
+import com.app.play.http.error.NetworkException;
 
 public class HttpUtil {
 

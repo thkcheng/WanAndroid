@@ -1,8 +1,7 @@
 package com.app.play.http;
 
 import com.app.play.App;
-import com.app.play.api.ApiServer;
-import com.app.play.api.URLs;
+import com.app.play.api.Apis;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -83,7 +82,7 @@ public class RetrofitUtil {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URLs.BASE_URL) //baseURL提倡以“/”结尾
+                .baseUrl(Apis.BASE_URL) //baseURL提倡以“/”结尾
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(new Gson())) //使用Gosn解析
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())    //适配工厂

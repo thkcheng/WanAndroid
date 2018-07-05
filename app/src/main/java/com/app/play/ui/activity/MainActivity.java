@@ -16,6 +16,7 @@ import com.app.play.ui.fragment.HomeFragment;
 import com.app.play.ui.fragment.NavigationFragment;
 import com.app.play.ui.fragment.SettingFragment;
 import com.app.play.ui.fragment.SystemFragment;
+import com.app.play.util.ArgbEvaluatorUtil;
 import com.app.play.util.viewpager.v4.FragmentPagerItem;
 import com.app.play.util.viewpager.v4.FragmentPagerItemAdapter;
 import com.app.play.util.viewpager.v4.FragmentPagerItems;
@@ -45,21 +46,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.radioGroup_main)
     RadioGroup radioGroupMain;
 
-    /**
-     * 存放tab对象的集合
-     */
-    private List<RadioButton> tabViews = new ArrayList<>();
-    /**
-     * 存放tab对应的图片资源集合
-     */
-    private List<Drawable> tabDrawables = new ArrayList<>();
-    /**
-     * 渐变效果
-     */
-    private ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
-    private int colorSelect;
-    private int colorUnSelect;
+    private String[] titles = new String[]{"首页", "体系", "导航", "设置"};
 
+    private ArgbEvaluatorUtil argbEvaluatorUtil = ArgbEvaluatorUtil.get();
 
     @Override
     public int getLayoutResID() {
@@ -68,18 +57,18 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
         FragmentPagerItems pages = new FragmentPagerItems(this);
         pages.add(FragmentPagerItem.of(HomeFragment.class.getSimpleName(), HomeFragment.class));
         pages.add(FragmentPagerItem.of(SystemFragment.class.getSimpleName(), SystemFragment.class));
         pages.add(FragmentPagerItem.of(NavigationFragment.class.getSimpleName(), NavigationFragment.class));
         pages.add(FragmentPagerItem.of(SettingFragment.class.getSimpleName(), SettingFragment.class));
 
-        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.setOffscreenPageLimit(4);
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), pages);
         mViewPager.setAdapter(adapter);
 
-        initTab();
+        argbEvaluatorUtil.addTab(rbtnHome, rbtnSystem, rbtnNavigation, rbtnSetting);
+        argbEvaluatorUtil.addTabDrawable(R.mipmap.icon_home, R.mipmap.icon_tixi, R.mipmap.icon_navi, R.mipmap.icon_setting);
     }
 
 
@@ -112,7 +101,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                changeTabDrawable(position, positionOffset);
+                argbEvaluatorUtil.changeTabDrawable(position, positionOffset);
             }
 
             @Override
@@ -120,105 +109,15 @@ public class MainActivity extends BaseActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        setTabSelect(position);
+                        argbEvaluatorUtil.setTabSelect(position);
                     }
                 }, DELAY_TIME);
-                tabViews.get(position).setChecked(true);
+                argbEvaluatorUtil.setChecked(position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
-    }
-
-
-    /**
-     * 初始化tab
-     */
-    private void initTab() {
-        colorSelect = ContextCompat.getColor(this, R.color.colorBlue);
-        colorUnSelect = ContextCompat.getColor(this, R.color.colorGray);
-
-        tabViews.add(rbtnHome);
-        tabViews.add(rbtnSystem);
-        tabViews.add(rbtnNavigation);
-        tabViews.add(rbtnSetting);
-
-        tabDrawables.add(ContextCompat.getDrawable(this, R.mipmap.icon_home).mutate());
-        tabDrawables.add(ContextCompat.getDrawable(this, R.mipmap.icon_tixi).mutate());
-        tabDrawables.add(ContextCompat.getDrawable(this, R.mipmap.icon_navi).mutate());
-        tabDrawables.add(ContextCompat.getDrawable(this, R.mipmap.icon_setting).mutate());
-    }
-
-    /**
-     * 改变tab图片
-     *
-     * @param position       Position index of the first page currently being displayed.
-     *                       Page position+1 will be visible if positionOffset is nonzero.
-     * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
-     */
-    private void changeTabDrawable(int position, float positionOffset) {
-        RadioButton fromTab;
-        RadioButton toTab;
-
-        Drawable drawableFrom;
-        Drawable drawableTo;
-
-        fromTab = tabViews.get(position);
-        drawableFrom = tabDrawables.get(position);
-
-        if (position != tabDrawables.size() - 1) {
-            toTab = tabViews.get(position + 1);
-            drawableTo = tabDrawables.get(position + 1);
-        } else {
-            toTab = null;
-            drawableTo = null;
-        }
-
-        if (fromTab != null) {
-            updateTabView(positionOffset, colorSelect, colorUnSelect, drawableFrom, fromTab);
-        }
-        if (toTab != null) {
-            updateTabView(positionOffset, colorUnSelect, colorSelect, drawableTo, toTab);
-        }
-    }
-
-
-    private void updateTabView(float positionOffset, int startColor, int endColor, Drawable drawable, RadioButton tab) {
-        int colorStart = (int) mArgbEvaluator.evaluate(positionOffset, startColor, endColor);
-        Drawable drawableColorStart = tintDrawable(drawable, ColorStateList.valueOf(colorStart));
-        tab.setTextColor(colorStart);
-        drawableColorStart.setBounds(0, 0, drawableColorStart.getIntrinsicWidth(), drawableColorStart.getIntrinsicHeight());
-        tab.setCompoundDrawables(null, drawableColorStart, null, null);
-    }
-
-    /**
-     * 修改切换tab的显示
-     *
-     * @param selectIndex
-     */
-    private void setTabSelect(int selectIndex) {
-        for (int index = 0; index < tabViews.size(); index++) {
-            RadioButton imageView = tabViews.get(index);
-            Drawable drawable = tabDrawables.get(index);
-            int resultColor;
-            if (index == selectIndex) {
-                resultColor = colorSelect;
-            } else {
-                resultColor = colorUnSelect;
-            }
-            Drawable resultDrawable = tintDrawable(drawable, ColorStateList.valueOf(resultColor));
-            resultDrawable.setBounds(0, 0, resultDrawable.getIntrinsicWidth(), resultDrawable.getIntrinsicHeight());
-            imageView.setTextColor(resultColor);
-            imageView.setCompoundDrawables(null, resultDrawable, null, null);
-        }
-    }
-
-    public Drawable tintDrawable(Drawable drawable, ColorStateList colors) {
-        final Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTintList(wrappedDrawable, colors);
-        return wrappedDrawable;
     }
 }

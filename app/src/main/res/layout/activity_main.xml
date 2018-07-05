@@ -54,7 +54,7 @@
                 android:id="@+id/bottomTab4"
                 style="@style/BottomTabStyle"
                 android:drawableTop="@mipmap/icon_setting"
-                android:text="@string/tab_setting" />
+                android:text="@string/tab_setting"/>
 
         </RadioGroup>
 

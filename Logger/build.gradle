@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+def androidCode = rootProject.ext.android
+
+android {
+    compileSdkVersion androidCode.compileSdkVersion
+    buildToolsVersion androidCode.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion androidCode.minSdkVersion
+        targetSdkVersion androidCode.targetSdkVersion
+    }
+}

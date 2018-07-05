@@ -1,10 +1,10 @@
-package com.app.play.entity;
+package com.app.play.model;
 
 /**
  * Created by thkcheng on 18/7/4.
  */
 
-public class BaseEntity<T> {
+public class BaseModel<T> {
 
 //    {
 //        "data": ...,

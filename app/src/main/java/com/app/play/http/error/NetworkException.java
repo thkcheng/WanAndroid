@@ -1,4 +1,4 @@
-package com.app.play.http;
+package com.app.play.http.error;
 
 import com.google.gson.JsonParseException;
 

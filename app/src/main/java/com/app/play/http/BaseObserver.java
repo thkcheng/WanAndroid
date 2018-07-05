@@ -1,18 +1,20 @@
 package com.app.play.http;
 
-import com.app.play.entity.BaseEntity;
+import com.app.play.model.BaseModel;
+import com.app.play.http.error.Errors;
+import com.app.play.http.error.NetworkException;
 import com.app.play.util.HttpUtil;
 import com.app.play.util.Preconditions;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public abstract class BaseObserver<T> implements Observer<BaseEntity<T>> {
+public abstract class BaseObserver<T> implements Observer<BaseModel<T>> {
 
     public static final String TAG = BaseObserver.class.getSimpleName();
 
     @Override
-    public void onNext(BaseEntity<T> value) {
+    public void onNext(BaseModel<T> value) {
 
         try {
             // 1. check value

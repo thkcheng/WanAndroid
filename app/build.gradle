@@ -35,7 +35,6 @@ dependencies {
     //other-lib
     api libList.butterknife
     annotationProcessor libList.butterknifeCompiler
-
     api libList.retrofit
     api libList.rxjava2
     api libList.rxandroid
@@ -43,9 +42,12 @@ dependencies {
     api libList.logging_interceptor
     api libList.converter_gson
     api libList.adapter_rxjava2
+    api libList.glide
 
-//    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-//    testImplementation 'junit:junit:4.12'
-//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //module
+    compile project(':Logger')
+    //    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    //    testImplementation 'junit:junit:4.12'
+    //    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
