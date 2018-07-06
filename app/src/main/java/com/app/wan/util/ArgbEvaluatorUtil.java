@@ -38,7 +38,7 @@ public class ArgbEvaluatorUtil {
      */
     private ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
     private int colorSelect = ContextCompat.getColor(BaseApp.getContext(), R.color.colorBlue);
-    private int colorUnSelect = ContextCompat.getColor(BaseApp.getContext(), R.color.colorGray);
+    private int colorUnSelect = ContextCompat.getColor(BaseApp.getContext(), R.color.colorBlack);
 
     /**
      * 添加tab

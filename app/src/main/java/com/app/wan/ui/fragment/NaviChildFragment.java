@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.wan.Logger;
 import com.app.wan.R;
@@ -57,6 +58,17 @@ public class NaviChildFragment extends BaseFragment {
                 TextView tvTag = (TextView) mInflater.inflate(R.layout.item_navi_tag, mFlowLayout, false);
                 tvTag.setText(aBean.getTitle());
                 return tvTag;
+            }
+        });
+    }
+
+    @Override
+    public void setListener() {
+        mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                Toast.makeText(getActivity(), datas.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
     }
