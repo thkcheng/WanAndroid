@@ -19,4 +19,16 @@ public class Apis {
      */
     public static String WAN_HOME_LIST = BASE_URL + "article/list/1/json";
 
+    /**
+     * 体系数据列表
+     * GET
+     */
+    public static String WAN_SYSTEM_LIST = BASE_URL + "tree/json";
+
+    /**
+     * 导航数据列表
+     * GET
+     */
+    public static String WAN_NAVI_LIST = BASE_URL + "navi/json";
+
 }

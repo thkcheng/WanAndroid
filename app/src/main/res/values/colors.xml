@@ -8,4 +8,7 @@
     <color name="activity_bg">#F3F4F5</color>
     <color name="colorBlue">#5B88FF</color>
     <color name="colorWhite">#FFFFFF</color>
+
+    <color name="aa">#36BC9B</color>
+    <color name="bb">#757575</color>
 </resources>

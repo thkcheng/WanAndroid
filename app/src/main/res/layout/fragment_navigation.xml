@@ -1,15 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_bg"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBlue"
         app:title="@string/tab_navi"
         app:titleTextColor="@color/colorWhite" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:orientation="horizontal">
+
+        <q.rorbin.verticaltablayout.VerticalTabLayout
+            android:id="@+id/mTablayout"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            app:indicator_color="@color/colorBlue"
+            app:indicator_gravity="left"
+            app:indicator_width="5dp"
+            app:tab_height="50dp"
+            app:tab_mode="scrollable" />
+        <!--#EDEDED-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcArticlesList"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/mViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

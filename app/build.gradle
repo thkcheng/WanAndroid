@@ -31,8 +31,7 @@ dependencies {
     api libList.appcompat
     api libList.cardView
     api libList.palette
-    api libList.XRecyclerView
-    api libList.design
+    api libList.recyclerview
 
     //other-lib
     api libList.butterknife
@@ -41,6 +40,7 @@ dependencies {
     api libList.logging_interceptor
     api libList.converter_gson
     api libList.glide
+    api libList.verticaltab
     //module
     compile project(':Logger')
     compile project(':RxJava')

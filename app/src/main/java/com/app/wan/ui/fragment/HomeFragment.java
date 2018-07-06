@@ -2,12 +2,8 @@ package com.app.wan.ui.fragment;
 
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Toast;
+import android.support.v7.widget.RecyclerView;
 
-import com.app.wan.Logger;
 import com.app.wan.R;
 import com.app.wan.api.Apis;
 import com.app.wan.base.BaseFragment;
@@ -18,7 +14,6 @@ import com.app.wan.http.error.ErrorModel;
 import com.app.wan.model.WanHomeBean;
 import com.app.wan.ui.adapter.HomeBannerAdapter;
 import com.app.wan.ui.adapter.HomeRecommendAdapter;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import butterknife.BindView;
 import io.reactivex.Observable;
@@ -27,13 +22,16 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import q.rorbin.verticaltablayout.VerticalTabLayout;
 
 public class HomeFragment extends BaseFragment {
 
+    @BindView(R.id.mViewPager)
     ViewPager mViewPager;
 
     @BindView(R.id.mRecyclerView)
-    XRecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
 
     @Override
     public int getLayoutResID() {
@@ -41,22 +39,8 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void initData() {
-        View header = LayoutInflater.from(getActivity()).inflate(R.layout.item_home_header, null);
-        mViewPager = header.findViewById(R.id.mViewPager);
-        mRecyclerView.addHeaderView(header);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                request();
-            }
-
-            @Override
-            public void onLoadMore() {
-                request();
-            }
-        });
-        request();
+        requestData();
     }
 
     public void setListener() {
@@ -65,26 +49,32 @@ public class HomeFragment extends BaseFragment {
     /**
      * 使用RxJava-flatMap实现先获取Banner数据再获取推荐数据
      */
-    public void request() {
+    public void requestData() {
         //flatMap https://blog.csdn.net/yuminfeng728/article/details/77882803
-        Observable.create(new ObservableOnSubscribe<Boolean>() {
+        Observable.create(new ObservableOnSubscribe<WanBanner>() {
             @Override
-            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+            public void subscribe(ObservableEmitter<WanBanner> e) throws Exception {
                 requestBanner(e);
             }
 
-        }).flatMap(new Function<Boolean, ObservableSource<Boolean>>() {
+        })
+//        .subscribeOn(Schedulers.io())
+//        .observeOn(Schedulers.io())
+        .flatMap(new Function<WanBanner, ObservableSource<WanBanner>>() {
             @Override
-            public ObservableSource<Boolean> apply(Boolean b) throws Exception {
-                if (b) {
-                    return Observable.just(true);
+            public ObservableSource<WanBanner> apply(WanBanner bean) throws Exception {
+                if (bean != null) {
+                    return Observable.just(bean);
                 }
-                return Observable.just(false);
+                return Observable.just(null);
             }
-        }).subscribe(new Consumer<Boolean>() {
+        })
+        .subscribe(new Consumer<WanBanner>() {
             @Override
-            public void accept(Boolean b) throws Exception {
-                requestRecommend();
+            public void accept(WanBanner bean) throws Exception {
+                if (bean != null) {
+                    requestRecommend();
+                }
             }
         });
     }
@@ -92,7 +82,7 @@ public class HomeFragment extends BaseFragment {
     /**
      * 请求banner数据
      */
-    private void requestBanner(final ObservableEmitter<Boolean> emitter) {
+    private void requestBanner(final ObservableEmitter<WanBanner> emitter) {
         HttpManager.get()
                 .tag(this)
                 .url(Apis.WAN_HOME_BANNER)
@@ -101,7 +91,7 @@ public class HomeFragment extends BaseFragment {
                     @Override
                     public void onSuccess(WanBanner response, Object... obj) {
                         mViewPager.setAdapter(new HomeBannerAdapter(getActivity(), response.getData()));
-                        emitter.onNext(true);
+                        emitter.onNext(response);
                     }
                     @Override
                     public void onFailure(ErrorModel errorModel) {
@@ -124,11 +114,6 @@ public class HomeFragment extends BaseFragment {
                     }
                     @Override
                     public void onFailure(ErrorModel errorModel) {
-                    }
-                    @Override
-                    public void onAfter(boolean success) {
-                        mRecyclerView.refreshComplete();
-                        mRecyclerView.loadMoreComplete();
                     }
                 });
     }

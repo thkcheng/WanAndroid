@@ -18,10 +18,9 @@
         android:id="@+id/mViewPager"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:layout_below="@+id/toolbar"
-        android:visibility="gone" />
+        android:layout_below="@+id/toolbar" />
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
