@@ -41,6 +41,7 @@ dependencies {
     api libList.converter_gson
     api libList.glide
     api libList.verticaltab
+
     //module
     compile project(':Logger')
     compile project(':RxJava')

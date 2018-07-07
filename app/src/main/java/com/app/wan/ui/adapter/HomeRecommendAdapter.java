@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.app.wan.R;
 import com.app.wan.base.BaseRecyclerAdapter;
 import com.app.wan.model.WanHomeBean;
+import com.app.wan.util.TimeUtil;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class HomeRecommendAdapter extends BaseRecyclerAdapter<WanHomeBean.DataBe
     @Override
     public void onBindData(RecyclerViewHolder holder, WanHomeBean.DataBean.DatasBean bean, int position) {
         holder.setText(R.id.tvTitle, bean.getTitle());
+        holder.setText(R.id.tvTime, TimeUtil.getPublishTime(bean.getPublishTime()));
         holder.setText(R.id.tvChapterName, bean.getChapterName());
-        holder.setText(R.id.tvAuthor, bean.getAuthor());
     }
 }

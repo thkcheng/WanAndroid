@@ -4,6 +4,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.app.wan.Logger;
 import com.app.wan.R;
 import com.app.wan.api.Apis;
 import com.app.wan.base.BaseFragment;
@@ -14,6 +15,9 @@ import com.app.wan.http.error.ErrorModel;
 import com.app.wan.model.WanHomeBean;
 import com.app.wan.ui.adapter.HomeBannerAdapter;
 import com.app.wan.ui.adapter.HomeRecommendAdapter;
+import com.app.wan.widget.RecyclerViewHeader;
+
+import java.util.LinkedHashMap;
 
 import butterknife.BindView;
 import io.reactivex.Observable;
@@ -22,16 +26,19 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
-import q.rorbin.verticaltablayout.VerticalTabLayout;
 
 public class HomeFragment extends BaseFragment {
 
     @BindView(R.id.mViewPager)
     ViewPager mViewPager;
 
+    @BindView(R.id.mRecyclerViewHeader)
+    RecyclerViewHeader mHeaderView;
+
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
+
+    private int start = 0;
 
     @Override
     public int getLayoutResID() {
@@ -40,6 +47,7 @@ public class HomeFragment extends BaseFragment {
 
     public void initData() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mHeaderView.attachTo(mRecyclerView ); //绑定到mRecyclerView头部
         requestData();
     }
 
@@ -50,11 +58,11 @@ public class HomeFragment extends BaseFragment {
      * 使用RxJava-flatMap实现先获取Banner数据再获取推荐数据
      */
     public void requestData() {
-        //flatMap https://blog.csdn.net/yuminfeng728/article/details/77882803
         Observable.create(new ObservableOnSubscribe<WanBanner>() {
             @Override
             public void subscribe(ObservableEmitter<WanBanner> e) throws Exception {
                 requestBanner(e);
+                Logger.i("HomeFragment", "subscribe====" + Thread.currentThread().getId());
             }
 
         })
@@ -74,6 +82,7 @@ public class HomeFragment extends BaseFragment {
             public void accept(WanBanner bean) throws Exception {
                 if (bean != null) {
                     requestRecommend();
+                    Logger.i("HomeFragment", "accept====" + Thread.currentThread().getId());
                 }
             }
         });
@@ -92,6 +101,7 @@ public class HomeFragment extends BaseFragment {
                     public void onSuccess(WanBanner response, Object... obj) {
                         mViewPager.setAdapter(new HomeBannerAdapter(getActivity(), response.getData()));
                         emitter.onNext(response);
+                        Logger.i("HomeFragment", "requestBanner====" + Thread.currentThread().getId());
                     }
                     @Override
                     public void onFailure(ErrorModel errorModel) {
@@ -105,12 +115,13 @@ public class HomeFragment extends BaseFragment {
     private void requestRecommend() {
         HttpManager.get()
                 .tag(this)
-                .url(Apis.WAN_HOME_LIST)
+                .url(String.format(Apis.WAN_HOME_LIST,start++))
                 .build()
                 .enqueue(new StringCallback<WanHomeBean>() {
                     @Override
                     public void onSuccess(WanHomeBean response, Object... obj) {
                         mRecyclerView.setAdapter(new HomeRecommendAdapter(getActivity(), response.getData().getDatas()));
+                        Logger.i("HomeFragment", "requestRecommend====" + Thread.currentThread().getId());
                     }
                     @Override
                     public void onFailure(ErrorModel errorModel) {

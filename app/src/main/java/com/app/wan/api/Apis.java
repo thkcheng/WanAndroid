@@ -14,10 +14,10 @@ public class Apis {
     public static String WAN_HOME_BANNER = BASE_URL + "banner/json";
 
     /**
-     * 首页文章列表
+     * 首页文章列表(页码从0开始)
      * GET
      */
-    public static String WAN_HOME_LIST = BASE_URL + "article/list/1/json";
+    public static String WAN_HOME_LIST = BASE_URL + "article/list/%d/json";
 
     /**
      * 体系数据列表
