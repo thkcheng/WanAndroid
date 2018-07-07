@@ -5,6 +5,9 @@ import android.content.Context;
 
 import com.app.wan.base.BaseApp;
 
+/**
+ * APP
+ */
 public class App extends Application{
 
     private static App mApp;
@@ -32,7 +35,7 @@ public class App extends Application{
      * removed by simply killing them; no user code (including this callback)
      * is executed when doing so.
      * <p>
-     * 该方法不会被回调
+     * 真机时该方法不会被回调
      * </p>
      */
     @Override
