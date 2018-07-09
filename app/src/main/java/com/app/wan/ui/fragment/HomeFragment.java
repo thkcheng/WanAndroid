@@ -16,6 +16,7 @@ import com.app.wan.model.WanHomeBean;
 import com.app.wan.ui.adapter.HomeBannerAdapter;
 import com.app.wan.ui.adapter.HomeRecommendAdapter;
 import com.app.wan.widget.RecyclerViewHeader;
+import com.app.wan.widget.jrecycleview.JRecyclerView;
 
 import java.util.LinkedHashMap;
 
@@ -32,9 +33,6 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.mViewPager)
     ViewPager mViewPager;
 
-    @BindView(R.id.mRecyclerViewHeader)
-    RecyclerViewHeader mHeaderView;
-
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
 
@@ -45,19 +43,21 @@ public class HomeFragment extends BaseFragment {
         return R.layout.fragment_home;
     }
 
-    public void initData() {
+    @Override
+    public void initView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mHeaderView.attachTo(mRecyclerView ); //绑定到mRecyclerView头部
-        requestData();
+        loadData();
     }
 
     public void setListener() {
+
     }
 
-    /**
-     * 使用RxJava-flatMap实现先获取Banner数据再获取推荐数据
-     */
-    public void requestData() {
+    @Override
+    public void loadData() {
+        /**
+         * 使用RxJava-flatMap实现先获取Banner数据再获取推荐数据
+         */
         Observable.create(new ObservableOnSubscribe<WanBanner>() {
             @Override
             public void subscribe(ObservableEmitter<WanBanner> e) throws Exception {
@@ -68,30 +68,31 @@ public class HomeFragment extends BaseFragment {
         })
 //        .subscribeOn(Schedulers.io())
 //        .observeOn(Schedulers.io())
-        .flatMap(new Function<WanBanner, ObservableSource<WanBanner>>() {
-            @Override
-            public ObservableSource<WanBanner> apply(WanBanner bean) throws Exception {
-                if (bean != null) {
-                    return Observable.just(bean);
-                }
-                return Observable.just(null);
-            }
-        })
-        .subscribe(new Consumer<WanBanner>() {
-            @Override
-            public void accept(WanBanner bean) throws Exception {
-                if (bean != null) {
-                    requestRecommend();
-                    Logger.i("HomeFragment", "accept====" + Thread.currentThread().getId());
-                }
-            }
-        });
+                .flatMap(new Function<WanBanner, ObservableSource<WanBanner>>() {
+                    @Override
+                    public ObservableSource<WanBanner> apply(WanBanner bean) throws Exception {
+                        if (bean != null) {
+                            return Observable.just(bean);
+                        }
+                        return Observable.just(null);
+                    }
+                })
+                .subscribe(new Consumer<WanBanner>() {
+                    @Override
+                    public void accept(WanBanner bean) throws Exception {
+                        if (bean != null) {
+                            requestRecommend();
+                            Logger.i("HomeFragment", "accept====" + Thread.currentThread().getId());
+                        }
+                    }
+                });
     }
 
     /**
      * 请求banner数据
      */
     private void requestBanner(final ObservableEmitter<WanBanner> emitter) {
+        showLoading();
         HttpManager.get()
                 .tag(this)
                 .url(Apis.WAN_HOME_BANNER)
@@ -125,6 +126,11 @@ public class HomeFragment extends BaseFragment {
                     }
                     @Override
                     public void onFailure(ErrorModel errorModel) {
+                    }
+
+                    @Override
+                    public void onAfter(boolean success) {
+                        hideLoading(success);
                     }
                 });
     }

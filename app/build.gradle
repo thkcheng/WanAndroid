@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 //需要在项目根目录的build.gradle 添加 apply from: 'root.gradle'
 def androidCode = rootProject.ext.android
+def libList = rootProject.ext.dependencies
 
 android {
     compileSdkVersion androidCode.compileSdkVersion
@@ -13,38 +14,57 @@ android {
         targetSdkVersion androidCode.targetSdkVersion
         versionCode androidCode.versionCode
         versionName androidCode.versionName
-    }
 
+        testInstrumentationRunner libList.androidRunner
+    }
+    // keystore文件
+    signingConfigs {
+        wan {
+            storeFile file('../wan.jks')
+            storePassword 'wan123456'
+            keyAlias 'wanandroid'
+            keyPassword 'wan1234567'
+        }
+    }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue 'string', 'debug', 'true'
+        }
+        release {
+            debuggable false
+            minifyEnabled true //是否运行混淆
+            signingConfig signingConfigs.wan
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "debug", "false"
         }
     }
 }
 
-def libList = rootProject.ext.dependencies
-
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //android support
-    api libList.appcompat
-    api libList.cardView
-    api libList.palette
-    api libList.recyclerview
+    implementation libList.appcompat
+    implementation libList.cardView
+    implementation libList.palette
+    implementation libList.recyclerview
+    implementation libList.junit
+    implementation libList.runner
+    implementation libList.espresso
 
     //other-lib
-    api libList.butterknife
+    implementation libList.butterknife
     annotationProcessor libList.butterknifeCompiler
-    api libList.okhttp3
-    api libList.logging_interceptor
-    api libList.converter_gson
-    api libList.glide
-    api libList.verticaltab
+    implementation libList.okhttp3
+    implementation libList.logging_interceptor
+    implementation libList.converter_gson
+    implementation libList.glide
+    implementation libList.verticaltab
 
     //module
-    compile project(':Logger')
-    compile project(':RxJava')
+    implementation project(':Logger')
+    implementation project(':RxJava')
     //    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     //    testImplementation 'junit:junit:4.12'
     //    androidTestImplementation 'com.android.support.test:runner:1.0.2'

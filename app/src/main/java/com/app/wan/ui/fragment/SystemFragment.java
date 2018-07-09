@@ -25,16 +25,16 @@ public class SystemFragment extends BaseFragment {
     }
 
     @Override
-    public void initData() {
+    public void initView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        requestData();
     }
 
     @Override
     public void setListener() {
     }
 
-    public void requestData() {
+    @Override
+    public void loadData() {
         HttpManager.get()
                 .tag(this)
                 .url(Apis.WAN_SYSTEM_LIST)
@@ -49,5 +49,11 @@ public class SystemFragment extends BaseFragment {
                     public void onFailure(ErrorModel errorModel) {
                     }
                 });
+    }
+
+    @Override
+    public void onLazyLoadingData() {
+        super.onLazyLoadingData();
+        loadData();
     }
 }

@@ -40,7 +40,7 @@ public class NaviChildFragment extends BaseFragment {
     }
 
     @Override
-    public void initData() {
+    public void initView() {
         Bundle bundle = getArguments();
         if (bundle != null) {
             String jsonStr = bundle.getString("datas");

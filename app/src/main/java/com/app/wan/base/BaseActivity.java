@@ -33,7 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseUI 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                initData();
+                initView();
                 setListener();
             }
         });

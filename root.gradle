@@ -18,9 +18,10 @@ ext {
             "cardView"               : "com.android.support:cardview-v7:${supportVersion}",
             "palette"                : "com.android.support:palette-v7:${supportVersion}",
             "recyclerview"           : "com.android.support:recyclerview-v7:${supportVersion}",
-
-            "butterknife"            : "com.jakewharton:butterknife:8.8.1",
-            "butterknifeCompiler"    : "com.jakewharton:butterknife-compiler:8.8.1",
+            "junit"                  : "junit:junit:4.12",
+            "runner"                 : "com.android.support.test:runner:1.0.2",
+            "espresso"               : "com.android.support.test.espresso:espresso-core:3.0.2",
+            "androidRunner"          : "android.support.test.runner.AndroidJUnitRunner",
 
             "retrofit"               : "com.squareup.retrofit2:retrofit:2.4.0",
             "rxjava2"                : "io.reactivex.rxjava2:rxjava:2.1.14",
@@ -31,5 +32,7 @@ ext {
             "adapter_rxjava2"        : "com.squareup.retrofit2:adapter-rxjava2:2.3.0",
             "glide"                  : "com.github.bumptech.glide:glide:3.7.0",
             "verticaltab"            : "q.rorbin:VerticalTabLayout:1.2.5",
+            "butterknife"            : "com.jakewharton:butterknife:8.8.1",
+            "butterknifeCompiler"    : "com.jakewharton:butterknife-compiler:8.8.1",
     ]
 }

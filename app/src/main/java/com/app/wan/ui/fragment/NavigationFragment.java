@@ -34,11 +34,10 @@ public class NavigationFragment extends BaseFragment {
     }
 
     @Override
-    public void initData() {
+    public void initView() {
         naviAdapter = new NaviViewPagerAdapter(getChildFragmentManager(), getActivity());
         mViewPager.setAdapter(naviAdapter);
         mTablayout.setupWithViewPager(mViewPager);
-        requestData();
     }
 
     @Override
@@ -46,11 +45,7 @@ public class NavigationFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    public void requestData() {
+    public void loadData() {
         HttpManager.get()
                 .tag(this)
                 .url(Apis.WAN_NAVI_LIST)
@@ -65,5 +60,16 @@ public class NavigationFragment extends BaseFragment {
                     public void onFailure(ErrorModel errorModel) {
                     }
                 });
+    }
+
+    @Override
+    public void onLazyLoadingData() {
+        super.onLazyLoadingData();
+        loadData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

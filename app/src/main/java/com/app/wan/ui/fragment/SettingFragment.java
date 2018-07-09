@@ -11,7 +11,7 @@ public class SettingFragment extends BaseFragment {
     }
 
     @Override
-    public void initData() {
+    public void initView() {
 
     }
 

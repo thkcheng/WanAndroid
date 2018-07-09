@@ -15,7 +15,7 @@ public class SystemChildrenActivitty extends BaseActivity{
     }
 
     @Override
-    public void initData() {
+    public void initView() {
 
     }
 }

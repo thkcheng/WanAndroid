@@ -16,6 +16,10 @@ import java.util.List;
  */
 public class HomeRecommendAdapter extends BaseRecyclerAdapter<WanHomeBean.DataBean.DatasBean> {
 
+    public static final int TYPE_HEADER = 0;  //说明是带有Header的
+    public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
+    public static final int TYPE_NORMAL = 2;  //说明是不带有header和footer的
+
     public HomeRecommendAdapter(Context context, List<WanHomeBean.DataBean.DatasBean> beans) {
         super(context, beans);
     }
@@ -36,5 +40,10 @@ public class HomeRecommendAdapter extends BaseRecyclerAdapter<WanHomeBean.DataBe
         holder.setText(R.id.tvTitle, bean.getTitle());
         holder.setText(R.id.tvTime, TimeUtil.getPublishTime(bean.getPublishTime()));
         holder.setText(R.id.tvChapterName, bean.getChapterName());
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 }

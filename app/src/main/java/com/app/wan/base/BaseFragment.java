@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.wan.R;
+import com.app.wan.http.HandlerMain;
 import com.app.wan.widget.LoadingDataLayout;
 
 import butterknife.BindView;
@@ -26,6 +27,15 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
     @BindView(R.id.view_loading_container)
     protected LoadingDataLayout mLoadingDataLayout;
 
+    /**
+     * 是否允许懒加载
+     */
+    private boolean allowLazyLoading = true;
+    /**
+     * Fragment视图是否已初始化完成
+     */
+    private boolean isViewCreated = false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +43,7 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        isViewCreated = true;
         View view = inflater.inflate(getLayoutResID(), container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -41,14 +52,61 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initLoadingDataLayout(view);
 
-        initData();
-        setListener();
+        //保证onCreate方法第一时间执行完，显示UI界面
+        HandlerMain.getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                initView();
+                setListener();
+                //Fragment初始化时setUserVisibleHint方法会先于onCreateView执行
+                prepareLazyLoading(getUserVisibleHint(), isViewCreated);
+            }
+        });
     }
 
-    public void setListener() {}
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        prepareLazyLoading(isVisibleToUser, isViewCreated);
+    }
+
+    /**
+     * 预备懒加载
+     *
+     * @param isVisibleToUser Fragment用户可见
+     * @param isViewCreated   Fragment视图已初始化完成
+     */
+    private void prepareLazyLoading(boolean isVisibleToUser, boolean isViewCreated) {
+        if (!allowLazyLoading) return;
+
+        if (isVisibleToUser && isViewCreated) {
+            allowLazyLoading = false;//保证onLazyLoadingData（）只调用一次
+            onLazyLoadingData();
+        }
+    }
+
+    /**
+     * 懒加载数据，只加载一次
+     */
+    public void onLazyLoadingData() {
+
+    }
+
+    /**
+     * 添加监听
+     */
+    public void setListener() {
+
+    }
+
+    /**
+     * 加载数据，如请求网络，读取本地缓存等
+     */
+    public void loadData() {
+
+    }
 
     /**
      * @param view
@@ -59,7 +117,7 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
             mLoadingDataLayout.setRetryListener(new LoadingDataLayout.OnRetryListener() {
                 @Override
                 public void onRetry() {
-//                    loadData();
+                    loadData();
                 }
             });
         }
@@ -80,15 +138,11 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
         showLoadingStatus(LoadingDataLayout.STATUS_LOADING);
     }
 
-    public void hideLoading(int status) {
-        switch (status) {
-            case LoadingDataLayout.STATUS_SUCCESS:
-                showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
-                break;
-
-            case LoadingDataLayout.STATUS_ERROR:
-                showLoadingStatus(LoadingDataLayout.STATUS_ERROR);
-                break;
+    public void hideLoading(boolean success) {
+        if (success) {
+            showLoadingStatus(LoadingDataLayout.STATUS_SUCCESS);
+        } else {
+            showLoadingStatus(LoadingDataLayout.STATUS_ERROR);
         }
     }
 }

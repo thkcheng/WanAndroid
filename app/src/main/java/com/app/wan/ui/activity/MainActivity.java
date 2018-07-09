@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public void initData() {
+    public void initView() {
         FragmentPagerItems pages = new FragmentPagerItems(this);
         pages.add(FragmentPagerItem.of(HomeFragment.class.getSimpleName(), HomeFragment.class));
         pages.add(FragmentPagerItem.of(SystemFragment.class.getSimpleName(), SystemFragment.class));
