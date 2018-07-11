@@ -48,6 +48,11 @@ public class SystemFragment extends BaseFragment {
                     @Override
                     public void onFailure(ErrorModel errorModel) {
                     }
+
+                    @Override
+                    public void onAfter(boolean success) {
+                        hideLoading(success);
+                    }
                 });
     }
 

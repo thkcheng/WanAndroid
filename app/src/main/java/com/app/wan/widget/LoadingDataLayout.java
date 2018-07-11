@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.app.wan.R;
 import com.app.wan.util.AnimationController;
+import com.app.wan.util.CommonAnimator;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -169,8 +170,19 @@ public class LoadingDataLayout extends RelativeLayout {
                 break;
 
             case STATUS_SUCCESS:
-                AnimationController.fadeOut(container, 800, 0);//慢慢消失
+//                AnimationController.fadeOut(container, 800, 0);//慢慢消失
 //                container.setVisibility(View.GONE);
+                new CommonAnimator.Builder(container)
+                        .alphaValues(1, 0)
+                        .duration(800)
+                        .listener(new CommonAnimator.Listener() {
+                            @Override
+                            public void onAnimationEnd() {
+                                container.setVisibility(GONE);
+                            }
+                        })
+                        .build()
+                        .foldWithAnimatorSet();
                 break;
 
             case STATUS_EMPTY:

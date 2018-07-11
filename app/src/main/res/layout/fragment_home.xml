@@ -50,4 +50,10 @@
         android:visibility="gone"
         app:head="@layout/item_home_header" />
 
+    <com.app.wan.widget.LoadingDataLayout
+        android:id="@+id/view_loading_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
 </RelativeLayout>

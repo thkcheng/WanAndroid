@@ -54,10 +54,10 @@ dependencies {
     implementation libList.cardView
     implementation libList.palette
     implementation libList.recyclerview
-    implementation libList.junit
-    implementation libList.runner
-    implementation libList.espresso
-
+    //test
+    testImplementation libList.junit
+    androidTestImplementation libList.runner
+    androidTestImplementation libList.espresso
     //other-lib
     implementation libList.butterknife
     annotationProcessor libList.butterknifeCompiler
@@ -67,7 +67,6 @@ dependencies {
     implementation libList.glide
     implementation libList.verticaltab
     implementation libList.refrelayout
-
     //module
     implementation project(':Logger')
     implementation project(':RxJava')

@@ -66,13 +66,20 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnL
         mAdapter = new HomeRecommendAdapter(getActivity(), recommends);
         mRecyclerView.setAdapter(mAdapter);
 
-        requestBanner();
-        mRefreshLayout.autoRefresh();
+        loadData();
     }
 
     public void setListener() {
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setOnLoadMoreListener(this);
+    }
+
+    @Override
+    public void loadData() {
+        requestBanner();
+        requestRecommend();
+        //主动刷新
+        //mRefreshLayout.autoRefresh();
     }
 
     @Override

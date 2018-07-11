@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/activity_bg">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/view_network_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1A000000"
+        android:background="#4D000000"
         android:orientation="vertical">
 
         <LinearLayout

@@ -52,7 +52,7 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initLoadingDataLayout(view);
+        initLoadingDataLayout();
 
         //保证onCreate方法第一时间执行完，显示UI界面
         HandlerMain.getHandler().post(new Runnable() {
@@ -109,11 +109,11 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
     }
 
     /**
-     * @param view
+     * 初始化LoadingDataLayout控件
      */
-    private void initLoadingDataLayout(View view) {
-        mLoadingDataLayout = view.findViewById(R.id.view_loading_container);
+    private void initLoadingDataLayout() {
         if (mLoadingDataLayout != null) {
+            showLoading();
             mLoadingDataLayout.setRetryListener(new LoadingDataLayout.OnRetryListener() {
                 @Override
                 public void onRetry() {
