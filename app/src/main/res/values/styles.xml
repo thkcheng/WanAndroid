@@ -10,6 +10,12 @@
         <item name="colorAccent">@color/colorBlue</item>
     </style>
 
+    <style name="AppStartTheme" parent="BaseTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@mipmap/app_start_bg</item>
+    </style>
+
     <style name="BottomTabStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

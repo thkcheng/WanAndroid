@@ -16,6 +16,11 @@ android {
         versionName androidCode.versionName
 
         testInstrumentationRunner libList.androidRunner
+
+        ndk {
+            //设置支持的SO库架构
+            abiFilters "armeabi", "armeabi-v7a", "x86"
+        }
     }
     // keystore文件
     signingConfigs {
@@ -61,10 +66,12 @@ dependencies {
     implementation libList.converter_gson
     implementation libList.glide
     implementation libList.verticaltab
+    implementation libList.refrelayout
 
     //module
     implementation project(':Logger')
     implementation project(':RxJava')
+    implementation files('libs/tbs_webview')
     //    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     //    testImplementation 'junit:junit:4.12'
     //    androidTestImplementation 'com.android.support.test:runner:1.0.2'

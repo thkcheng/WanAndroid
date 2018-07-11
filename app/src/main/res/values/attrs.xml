@@ -13,8 +13,19 @@
 
     <!-- JRecyclerView的头部广告引用和胸部引用-->
     <declare-styleable name="recycler">
-        <attr name="head" format="reference"/>
-        <attr name="body" format="reference"/>
+        <attr name="head" format="reference" />
+        <attr name="body" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SuperTextView">
+        <attr name="dynamicText" format="string" />
+        <attr name="duration" format="integer" />
+        <attr name="selectedColor" format="color" />
+        <attr name="dynamicStyle" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="typewriting" value="1" />
+            <enum name="changeColor" value="2" />
+        </attr>
     </declare-styleable>
 
 </resources>

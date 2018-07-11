@@ -2,16 +2,20 @@ package com.app.wan.ui.activity;
 
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.app.wan.R;
 import com.app.wan.base.BaseActivity;
+import com.app.wan.base.BaseApp;
 import com.app.wan.ui.fragment.HomeFragment;
 import com.app.wan.ui.fragment.NavigationFragment;
 import com.app.wan.ui.fragment.SettingFragment;
 import com.app.wan.ui.fragment.SystemFragment;
 import com.app.wan.util.ArgbEvaluatorUtil;
+import com.app.wan.util.ToastUtil;
 import com.app.wan.util.viewpager.v4.FragmentPagerItem;
 import com.app.wan.util.viewpager.v4.FragmentPagerItemAdapter;
 import com.app.wan.util.viewpager.v4.FragmentPagerItems;
@@ -38,6 +42,10 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.radioGroup_main)
     RadioGroup radioGroupMain;
 
+    private long exitTime = 0;
+
+    private String[] titles = new String[]{"首页", "体系", "导航", "设置"};
+
     private ArgbEvaluatorUtil argbEvaluatorUtil = ArgbEvaluatorUtil.get();
 
     @Override
@@ -46,7 +54,14 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected boolean displayHomeAsUpEnabled() {
+        return false;
+    }
+
+    @Override
     public void initView() {
+        setTitle(titles[0]);
+
         FragmentPagerItems pages = new FragmentPagerItems(this);
         pages.add(FragmentPagerItem.of(HomeFragment.class.getSimpleName(), HomeFragment.class));
         pages.add(FragmentPagerItem.of(SystemFragment.class.getSimpleName(), SystemFragment.class));
@@ -61,7 +76,6 @@ public class MainActivity extends BaseActivity {
         argbEvaluatorUtil.addTabDrawable(R.mipmap.icon_home, R.mipmap.icon_tixi, R.mipmap.icon_navi, R.mipmap.icon_setting);
     }
 
-
     @Override
     public void setListener() {
         radioGroupMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -69,15 +83,19 @@ public class MainActivity extends BaseActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.bottomTab1:
+                        setTitle(titles[0]);
                         mViewPager.setCurrentItem(0, false);
                         break;
                     case R.id.bottomTab2:
+                        setTitle(titles[1]);
                         mViewPager.setCurrentItem(1, false);
                         break;
                     case R.id.bottomTab3:
+                        setTitle(titles[2]);
                         mViewPager.setCurrentItem(2, false);
                         break;
                     case R.id.bottomTab4:
+                        setTitle(titles[3]);
                         mViewPager.setCurrentItem(3, false);
                         break;
                 }
@@ -99,6 +117,7 @@ public class MainActivity extends BaseActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        setTitle(titles[position]);
                         argbEvaluatorUtil.setTabSelect(position);
                     }
                 }, DELAY_TIME);
@@ -109,5 +128,19 @@ public class MainActivity extends BaseActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - exitTime > 2000) {
+                ToastUtil.showToast("再按一次退出应用");
+                exitTime = System.currentTimeMillis();
+            } else {
+                BaseApp.getInstance().exitApp();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

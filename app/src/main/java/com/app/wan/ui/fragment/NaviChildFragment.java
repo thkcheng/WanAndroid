@@ -1,5 +1,6 @@
 package com.app.wan.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.app.wan.Logger;
 import com.app.wan.R;
 import com.app.wan.base.BaseFragment;
 import com.app.wan.model.WanNaviBean;
+import com.app.wan.ui.activity.ParticularsActivity;
 import com.app.wan.util.JsonUtil;
 import com.app.wan.widget.flowlayout.FlowLayout;
 import com.app.wan.widget.flowlayout.TagAdapter;
@@ -44,8 +46,7 @@ public class NaviChildFragment extends BaseFragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             String jsonStr = bundle.getString("datas");
-            datas = JsonUtil.toObject(jsonStr, new TypeToken<List<WanNaviBean.DataBean.ArticlesBean>>() {
-            }.getType());
+            datas = JsonUtil.toObject(jsonStr, new TypeToken<List<WanNaviBean.DataBean.ArticlesBean>>() {}.getType());
             Logger.i("NaviChildFragment--->>", datas.toArray().toString());
         }
 
@@ -67,7 +68,9 @@ public class NaviChildFragment extends BaseFragment {
         mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                Toast.makeText(getActivity(), datas.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), ParticularsActivity.class);
+                intent.putExtra("link", datas.get(position).getLink());
+                startActivity(intent);
                 return true;
             }
         });

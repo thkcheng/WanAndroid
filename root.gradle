@@ -34,5 +34,6 @@ ext {
             "verticaltab"            : "q.rorbin:VerticalTabLayout:1.2.5",
             "butterknife"            : "com.jakewharton:butterknife:8.8.1",
             "butterknifeCompiler"    : "com.jakewharton:butterknife-compiler:8.8.1",
+            "refrelayout"            : "com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1",
     ]
 }

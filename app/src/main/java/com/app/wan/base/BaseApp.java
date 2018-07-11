@@ -57,6 +57,10 @@ public class BaseApp {
      */
     public void exitApp() {
         lifeCallback.finishAllActivity();
+        android.os.Process.killProcess(android.os.Process.myPid());// 杀死进程
+        android.os.Process.killProcess(android.os.Process.myTid());// 杀死当前UI线程
+        android.os.Process.killProcess(android.os.Process.myUid());// 杀死当前用户
+        System.exit(0);
     }
 
     /**

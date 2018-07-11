@@ -3,13 +3,10 @@ package com.app.wan.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.app.wan.R;
 import com.app.wan.base.BaseRecyclerAdapter;
-import com.app.wan.model.WanHomeBean;
 import com.app.wan.model.WanSystemBean;
-import com.app.wan.ui.activity.SystemChildrenActivitty;
 
 import java.util.List;
 
@@ -30,7 +27,6 @@ public class SystemListAdapter extends BaseRecyclerAdapter<WanSystemBean.DataBea
     @Override
     protected void onItemClick(int position, View item) {
         super.onItemClick(position, item);
-        mContext.startActivity(new Intent(mContext, SystemChildrenActivitty.class));
     }
 
     @Override

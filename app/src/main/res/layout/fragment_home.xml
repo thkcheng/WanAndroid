@@ -6,33 +6,41 @@
     android:background="@color/activity_bg"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBlue"
-        app:title="@string/tab_home"
-        app:titleTextColor="@color/colorWhite" />
-
-    <LinearLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/mRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:orientation="vertical"
-        android:visibility="visible">
+        app:srlAccentColor="@color/colorBlue"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlPrimaryColor="@color/colorWhite">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/mViewPager"
-            android:layout_width="match_parent"
-            android:layout_height="180dp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/mRecyclerView"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/mViewPager"
-            android:orientation="vertical" />
-    </LinearLayout>
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/mViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/mRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/mViewPager"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <com.app.wan.widget.jrecycleview.JRecyclerView
         android:id="@+id/mJRecyclerView"
@@ -41,12 +49,5 @@
         android:layout_below="@id/toolbar"
         android:visibility="gone"
         app:head="@layout/item_home_header" />
-
-    <com.app.wan.widget.LoadingDataLayout
-        android:id="@+id/view_loading_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:visibility="gone" />
 
 </RelativeLayout>

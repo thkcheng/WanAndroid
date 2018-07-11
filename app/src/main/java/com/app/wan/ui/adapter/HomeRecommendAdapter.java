@@ -1,12 +1,14 @@
 package com.app.wan.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.app.wan.R;
 import com.app.wan.base.BaseRecyclerAdapter;
 import com.app.wan.model.WanHomeBean;
+import com.app.wan.ui.activity.ParticularsActivity;
 import com.app.wan.util.TimeUtil;
 
 import java.util.List;
@@ -31,8 +33,9 @@ public class HomeRecommendAdapter extends BaseRecyclerAdapter<WanHomeBean.DataBe
 
     @Override
     protected void onItemClick(int position, View item) {
-        super.onItemClick(position, item);
-        Toast.makeText(mContext, "点击观看推荐文章", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(mContext, ParticularsActivity.class);
+        intent.putExtra("link", mBeans.get(position).getLink());
+        mContext.startActivity(intent);
     }
 
     @Override
@@ -40,6 +43,7 @@ public class HomeRecommendAdapter extends BaseRecyclerAdapter<WanHomeBean.DataBe
         holder.setText(R.id.tvTitle, bean.getTitle());
         holder.setText(R.id.tvTime, TimeUtil.getPublishTime(bean.getPublishTime()));
         holder.setText(R.id.tvChapterName, bean.getChapterName());
+        holder.setText(R.id.tvAuthor, bean.getAuthor());
     }
 
     @Override
