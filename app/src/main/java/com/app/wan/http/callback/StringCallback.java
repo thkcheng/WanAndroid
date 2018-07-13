@@ -97,10 +97,9 @@ public abstract class StringCallback<T> extends CommonCallback<T>{
      * @param commonParams
      */
     private void cacheResponse(String json, CommonParams commonParams) {
-        // 3. add aCache
         if (commonParams.acache()) {
             ACache aCache = BaseApp.getACache();
-            aCache.put(commonParams.url(), json, Constants.ACACHE_TIME); //默认十秒缓存
+            aCache.put(commonParams.url(), json, commonParams.time()); //缓存有效时间默认10秒
         }
     }
 
