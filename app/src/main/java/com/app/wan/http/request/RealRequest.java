@@ -102,7 +102,7 @@ public class RealRequest {
      */
     private <T> void enqueue(Call call, final CommonCallback<T> callback) {
         callback.onBefore();
-        // commonParams.acache is true and cache key->value is null
+        // commonParams.acache is true and cache key->value not null
         if (commonParams.acache() && BaseApp.getACache().getAsString(commonParams.url()) != null) {
             onCacheResult(callback);
             return;
