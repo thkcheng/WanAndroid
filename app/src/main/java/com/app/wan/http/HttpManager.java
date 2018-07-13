@@ -67,7 +67,7 @@ public class HttpManager {
                 .connectTimeout(TIMEOUT, TimeUnit.SECONDS)     //从主机读取数据超时
                 .readTimeout(TIMEOUT, TimeUnit.SECONDS)        //从主机读数据超时
                 .writeTimeout(TIMEOUT, TimeUnit.SECONDS)       //从主机写数据超时
-                .proxy(Proxy.NO_PROXY)                         //禁止使用代理
+//                .proxy(Proxy.NO_PROXY)                         //禁止使用代理
                 /*
                  * 添加通用的Header 如:token
                  */

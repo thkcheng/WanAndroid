@@ -50,6 +50,7 @@ public abstract class OKHttpRequest {
 
     public RealRequest build(CommonParams commonParams) {
         this.commonParams = commonParams;
+        //开始构建请求
         return new RealRequest(generateRequest(), commonParams);
     }
 

@@ -1,8 +1,10 @@
 package com.app.wan.http.request;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.app.wan.Logger;
+import com.app.wan.base.BaseApp;
 import com.app.wan.http.CommonParams;
 import com.app.wan.http.HandlerMain;
 import com.app.wan.http.HttpManager;
@@ -54,6 +56,7 @@ public class RealRequest {
     public <T> void enqueue(CommonCallback<T> callback) {
         logRequest(request.url().toString(), request.method(), commonParams.params());
         Call call = HttpManager.getInstance().getOkHttpClient().newCall(request);
+        callback.requestCommonParams(commonParams);
         enqueue(call, callback);
     }
 
@@ -99,6 +102,11 @@ public class RealRequest {
      */
     private <T> void enqueue(Call call, final CommonCallback<T> callback) {
         callback.onBefore();
+        // commonParams.acache is true and cache key->value is null
+        if (commonParams.acache() && BaseApp.getACache().getAsString(commonParams.url()) != null) {
+            onCacheResult(callback);
+            return;
+        }
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException ex) {
@@ -129,6 +137,28 @@ public class RealRequest {
 
             // 2. parse response
             T result = callback.parseResponse(response);
+
+            // 3. call success method
+            sendSuccessCallback(result, callback);
+            return result;
+        } catch (Exception ex) {
+            // 1. print stack trace
+            ex.printStackTrace();
+            // 2. Exception to NetworkException
+            NetworkException netEx = NetworkException.newException(ex);
+            // 3. call fail method
+            sendFailureCallback(netEx.getErrorCode(), netEx.getErrorMessage(), callback);
+        }
+        return null;
+    }
+
+    private <T> T onCacheResult(CommonCallback<T> callback) {
+        try {
+            // 1. get cache
+            String cacheJson = BaseApp.getACache().getAsString(commonParams.url());
+
+            // 2. parse cache
+            T result = callback.parseCacheJson(cacheJson);
 
             // 3. call success method
             sendSuccessCallback(result, callback);

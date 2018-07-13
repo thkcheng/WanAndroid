@@ -1,8 +1,12 @@
 package com.app.wan.http.callback;
 
 import com.app.wan.Logger;
+import com.app.wan.base.BaseApp;
+import com.app.wan.common.Constants;
+import com.app.wan.http.CommonParams;
 import com.app.wan.http.HttpManager;
 import com.app.wan.http.error.NetworkException;
+import com.app.wan.util.ACache;
 import com.app.wan.util.JsonUtil;
 import com.app.wan.util.Preconditions;
 
@@ -38,6 +42,22 @@ public abstract class StringCallback<T> extends CommonCallback<T>{
         // 3. parse json to object
         T result = JsonUtil.toObject(json, getType());
         Preconditions.checkNotNull(result);
+
+        // 4. add cache
+        cacheResponse(json, commonParams);
+        return result;
+    }
+
+    @Override
+    public T parseCacheJson(String cacheJson) throws Exception {
+
+        // 1. get cache
+        ACache aCache = BaseApp.getACache();
+        String json = aCache.getAsString(commonParams.url());
+
+        // 2. parse json to object
+        T result = JsonUtil.toObject(json, getType());
+        Preconditions.checkNotNull(result);
         return result;
     }
 
@@ -50,8 +70,8 @@ public abstract class StringCallback<T> extends CommonCallback<T>{
     private void logResponse(String url, String json) {
         // 日志格式
         // Response
-        // --> https://api.douban.com/v2/book/search?tag=热门&start=0&count=20
-        // --> {"count":20,"start":0,"total":122,"books":[{"rating":{"max":10,"numRaters":487,……
+        // --> http://www.wanandroid.com/article/list/0/json?tag=tag
+        // --> {"data":{"curPage":1,"datas":[{"apkLink":"","author":"zfman","chapterId":……
         String result = String.format("Response\n >>> %s\n >>> %s", url, json);
         Logger.i(TAG, result);
     }
@@ -68,4 +88,20 @@ public abstract class StringCallback<T> extends CommonCallback<T>{
             throw NetworkException.newException(code, message);
         }
     }
+
+
+    /**
+     * 根据commonParams.acache缓存数据
+     *
+     * @param json
+     * @param commonParams
+     */
+    private void cacheResponse(String json, CommonParams commonParams) {
+        // 3. add aCache
+        if (commonParams.acache()) {
+            ACache aCache = BaseApp.getACache();
+            aCache.put(commonParams.url(), json, Constants.ACACHE_TIME); //默认十秒缓存
+        }
+    }
+
 }

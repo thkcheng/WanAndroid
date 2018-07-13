@@ -5,6 +5,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.app.wan.util.ACache;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +19,8 @@ public class BaseApp {
     private Context context;
 
     private ActivityCallback lifeCallback;
+
+    private ACache aCache;
 
     /**** 不使用synchronized和lock 实现一个线程安全(高效)的单例 start ****/
     private BaseApp() {
@@ -43,13 +47,19 @@ public class BaseApp {
         lifeCallback = new ActivityCallback();
         application.registerActivityLifecycleCallbacks(lifeCallback);
 
+        aCache = ACache.get(getContext());
+
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, Throwable ex) {
                 ex.printStackTrace();
-                //saveCrashInfo(ex, FileUtils.getCrashDir(), Common.FILE_CRASH_LOG);
+                //saveCrashInfo(ex, FileUtils.getCrashDir(), Constants.FILE_CRASH_LOG);
             }
         });
+    }
+
+    public static ACache getACache() {
+        return getInstance().aCache;
     }
 
     /**

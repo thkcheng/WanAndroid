@@ -121,6 +121,7 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnL
         HttpManager.get()
                 .tag(this)
                 .url(String.format(Apis.WAN_HOME_LIST, startPage))
+                .acache(true)
                 .build()
                 .enqueue(new StringCallback<WanHomeBean>() {
                     @Override

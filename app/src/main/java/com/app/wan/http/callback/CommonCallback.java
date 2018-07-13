@@ -1,6 +1,8 @@
 package com.app.wan.http.callback;
 
 import com.app.wan.Logger;
+import com.app.wan.util.ACache;
+import com.app.wan.http.CommonParams;
 import com.app.wan.http.error.ErrorModel;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,6 +18,8 @@ import okhttp3.Response;
  * Created by thkcheng on 2018/7/4.
  */
 public abstract class CommonCallback<T> {
+
+    protected CommonParams commonParams;
 
     public final static CommonCallback<String> NO_CALLBACK = new StringCallback<String>() {
         @Override
@@ -42,6 +46,14 @@ public abstract class CommonCallback<T> {
      * @throws Exception
      */
     public abstract T parseResponse(Response response) throws Exception;
+
+    /**
+     * 解析本地缓存的JSON数据
+     *
+     * @param cacheJson {@link ACache}
+     * @throws Exception
+     */
+    public abstract T parseCacheJson(String cacheJson) throws Exception;
 
     /**
      * @param response 返回的对象
@@ -83,4 +95,12 @@ public abstract class CommonCallback<T> {
         }
     }
 
+    /**
+     * 网络请求参数
+     *
+     * @param commonParams 请求参数
+     */
+    public void requestCommonParams (CommonParams commonParams) {
+        this.commonParams = commonParams;
+    }
 }

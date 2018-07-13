@@ -40,6 +40,8 @@ public class CommonParams {
     private String content;
     private MediaType mediaType;
 
+    private boolean acache;
+
     public String url() {
         return url;
     }
@@ -68,7 +70,9 @@ public class CommonParams {
         return mediaType;
     }
 
-
+    public Boolean acache() {
+        return acache;
+    }
 
     private CommonParams(Builder builder) {
         this.url = builder.url;
@@ -79,6 +83,8 @@ public class CommonParams {
         this.files = builder.files;
         this.content = builder.content;
         this.mediaType = builder.mediaType;
+
+        this.acache = builder.acache;
     }
 
     public static final class Builder {
@@ -90,6 +96,7 @@ public class CommonParams {
         private String content;
         private MediaType mediaType;
         private OKHttpRequest okHttpRequest;
+        private boolean acache; //是否开启时效缓存
 
         public Builder(String method) {
             if (POST_FORM.equals(method)) {
@@ -150,6 +157,11 @@ public class CommonParams {
 
         public Builder mediaType(MediaType mediaType) {
             this.mediaType = mediaType;
+            return this;
+        }
+
+        public Builder acache(Boolean acache) {
+            this.acache = acache;
             return this;
         }
 
