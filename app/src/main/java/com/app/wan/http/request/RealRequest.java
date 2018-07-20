@@ -1,7 +1,6 @@
 package com.app.wan.http.request;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.app.wan.Logger;
 import com.app.wan.base.BaseApp;

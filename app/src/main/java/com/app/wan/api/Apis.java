@@ -31,4 +31,10 @@ public class Apis {
      */
     public static String WAN_NAVI_LIST = BASE_URL + "navi/json";
 
+    /**
+     * 导航数据列表
+     * GET
+     */
+    public static String WAN_LOGIN = BASE_URL + "user/login";
+
 }

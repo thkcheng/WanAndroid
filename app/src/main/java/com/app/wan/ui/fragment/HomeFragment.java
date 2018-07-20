@@ -1,11 +1,9 @@
 package com.app.wan.ui.fragment;
 
-import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.app.wan.Logger;
 import com.app.wan.R;
 import com.app.wan.api.Apis;
 import com.app.wan.base.BaseFragment;
@@ -14,28 +12,18 @@ import com.app.wan.http.HttpManager;
 import com.app.wan.http.callback.StringCallback;
 import com.app.wan.http.error.ErrorModel;
 import com.app.wan.model.WanHomeBean;
-import com.app.wan.ui.activity.ParticularsActivity;
 import com.app.wan.ui.adapter.HomeBannerAdapter;
 import com.app.wan.ui.adapter.HomeRecommendAdapter;
 import com.app.wan.util.ToastUtil;
-import com.app.wan.widget.RecyclerViewHeader;
-import com.app.wan.widget.jrecycleview.JRecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 public class HomeFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
 

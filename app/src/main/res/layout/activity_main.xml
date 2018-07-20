@@ -73,4 +73,14 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnMy"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="60dp"
+        android:layout_marginRight="10dp"
+        android:background="@mipmap/icon_home_login" />
+
 </RelativeLayout>

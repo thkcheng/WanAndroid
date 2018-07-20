@@ -1,8 +1,11 @@
 package com.app.wan.ui.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -41,6 +44,9 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.radioGroup_main)
     RadioGroup radioGroupMain;
+
+    @BindView(R.id.btnMy)
+    Button btnMy;
 
     private long exitTime = 0;
 
@@ -126,6 +132,13 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        btnMy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
         });
     }

@@ -96,6 +96,21 @@ public class ImageManager {
     }
 
     /**
+     * 加载图片
+     *
+     * @param imageView  要设置图片的ImageView
+     * @param resourceId 图片ResId
+     */
+    public static void loadImage(ImageView imageView, Integer resourceId) {
+        Glide.with(getContext())
+                .load(resourceId)
+                .error(R.mipmap.image_bg_default)
+                .placeholder(R.mipmap.image_bg_default)
+                .crossFade()
+                .into(imageView);
+    }
+
+    /**
      * 加载图片并缓存图片
      *
      * @param imageView 要设置图片的ImageView
