@@ -28,7 +28,10 @@ public class PostFormRequest extends OKHttpRequest {
         Map<String, String> params = commonParams.params();
         if (files == null || files.isEmpty()) {
             FormBody.Builder builder = new FormBody.Builder();
-            addParams(builder, params);
+            //add-params
+            for (String key : params.keySet()) {
+                builder.add(key, params.get(key));
+            }
             return builder.build();
         } else {
             MultipartBody.Builder builder = new MultipartBody.Builder()
@@ -41,17 +44,6 @@ public class PostFormRequest extends OKHttpRequest {
                 builder.addFormDataPart(fileInput.key, fileInput.filename, fileBody);
             }
             return builder.build();
-        }
-    }
-
-    private void addParams(FormBody.Builder builder, Map<String, String> params) {
-        if (params == null || params.isEmpty()) {
-            builder.add("1", "1");
-            return;
-        }
-
-        for (String key : params.keySet()) {
-            builder.add(key, params.get(key));
         }
     }
 
