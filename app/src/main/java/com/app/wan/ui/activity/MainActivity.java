@@ -2,26 +2,27 @@ package com.app.wan.ui.activity;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.app.wan.R;
 import com.app.wan.base.BaseActivity;
 import com.app.wan.base.BaseApp;
+import com.app.wan.base.BaseFragmentPagerAdapter;
 import com.app.wan.ui.fragment.HomeFragment;
 import com.app.wan.ui.fragment.NavigationFragment;
 import com.app.wan.ui.fragment.SettingFragment;
 import com.app.wan.ui.fragment.SystemFragment;
 import com.app.wan.util.ArgbEvaluatorUtil;
 import com.app.wan.util.ToastUtil;
-import com.app.wan.util.viewpager.v4.FragmentPagerItem;
-import com.app.wan.util.viewpager.v4.FragmentPagerItemAdapter;
-import com.app.wan.util.viewpager.v4.FragmentPagerItems;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -68,15 +69,14 @@ public class MainActivity extends BaseActivity {
     public void initView() {
         setTitle(titles[0]);
 
-        FragmentPagerItems pages = new FragmentPagerItems(this);
-        pages.add(FragmentPagerItem.of(HomeFragment.class.getSimpleName(), HomeFragment.class));
-        pages.add(FragmentPagerItem.of(SystemFragment.class.getSimpleName(), SystemFragment.class));
-        pages.add(FragmentPagerItem.of(NavigationFragment.class.getSimpleName(), NavigationFragment.class));
-        pages.add(FragmentPagerItem.of(SettingFragment.class.getSimpleName(), SettingFragment.class));
-
-        mViewPager.setOffscreenPageLimit(4);
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), pages);
+        final List<Fragment> pages = new ArrayList<>();
+        pages.add(new HomeFragment());
+        pages.add(new SystemFragment());
+        pages.add(new NavigationFragment());
+        pages.add(new SettingFragment());
+        BaseFragmentPagerAdapter adapter = new BaseFragmentPagerAdapter(getSupportFragmentManager(), pages);
         mViewPager.setAdapter(adapter);
+        mViewPager.setOffscreenPageLimit(4);
 
         argbEvaluatorUtil.addTab(rbtnHome, rbtnSystem, rbtnNavigation, rbtnSetting);
         argbEvaluatorUtil.addTabDrawable(R.mipmap.icon_home, R.mipmap.icon_tixi, R.mipmap.icon_navi, R.mipmap.icon_setting);

@@ -2,6 +2,7 @@ package com.app.wan.http;
 
 import com.app.wan.App;
 import com.app.wan.Logger;
+import com.app.wan.base.BaseApp;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class HttpManager {
 
     private HttpManager() {
 
-        File cacheFile = new File(App.getInstance().getCacheDir(), "cacheData");
+        File cacheFile = new File(BaseApp.getContext().getCacheDir(), "cacheData");
         mCache = new Cache(cacheFile, DEFAULT_DIR_CACHE); //Google建议放到这里
 
         mOkHttpClient = new OkHttpClient.Builder()
