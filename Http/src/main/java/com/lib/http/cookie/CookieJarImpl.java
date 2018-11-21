@@ -1,4 +1,4 @@
-package com.app.wan.http.cookie;
+package com.lib.http.cookie;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,9 @@ import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 
+/**
+ * Created by thkcheng on 2018/11/21.
+ */
 public class CookieJarImpl implements CookieJar {
 
     private Map<String, List<Cookie>> cookieMap = new HashMap<>();

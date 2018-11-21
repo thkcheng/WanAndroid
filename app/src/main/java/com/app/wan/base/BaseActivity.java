@@ -10,8 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.app.wan.R;
-import com.app.wan.http.HttpManager;
 import com.app.wan.widget.LoadingDataLayout;
+import com.lib.http.HttpManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -13,7 +13,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     api libList.rxjava2
     api libList.rxandroid
     api libList.adapter_rxjava2

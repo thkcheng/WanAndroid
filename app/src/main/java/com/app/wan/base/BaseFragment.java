@@ -1,6 +1,7 @@
 package com.app.wan.base;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.wan.R;
-import com.app.wan.http.HandlerMain;
 import com.app.wan.widget.LoadingDataLayout;
 
 import butterknife.BindView;
@@ -55,7 +55,7 @@ public abstract class BaseFragment extends Fragment implements IBaseUI {
         initLoadingDataLayout();
 
         //保证onCreate方法第一时间执行完，显示UI界面
-        HandlerMain.getHandler().post(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
                 initView();

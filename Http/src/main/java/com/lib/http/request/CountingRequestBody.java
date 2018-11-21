@@ -1,8 +1,11 @@
-package com.app.wan.http.request;
+package com.lib.http.request;
+
+import com.lib.http.CommonParams;
 
 import java.io.IOException;
 
 import okhttp3.MediaType;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okio.Buffer;
 import okio.BufferedSink;
@@ -35,7 +38,7 @@ public class CountingRequestBody extends RequestBody {
     }
 
     @Override
-    public long contentLength() {
+    public long contentLength() throws IOException {
         try {
             return delegate.contentLength();
         } catch (IOException e) {
@@ -46,7 +49,6 @@ public class CountingRequestBody extends RequestBody {
 
     @Override
     public void writeTo(BufferedSink sink) throws IOException {
-
         countingSink = new CountingSink(sink);
         BufferedSink bufferedSink = Okio.buffer(countingSink);
 
@@ -76,5 +78,4 @@ public class CountingRequestBody extends RequestBody {
     public static interface Listener {
         public void onRequestProgress(long bytesWritten, long contentLength);
     }
-
 }

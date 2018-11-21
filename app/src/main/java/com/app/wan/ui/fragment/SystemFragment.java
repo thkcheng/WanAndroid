@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import com.app.wan.R;
 import com.app.wan.api.Apis;
 import com.app.wan.base.BaseFragment;
-import com.app.wan.http.HttpManager;
-import com.app.wan.http.callback.StringCallback;
-import com.app.wan.http.error.ErrorModel;
 import com.app.wan.model.WanSystemBean;
 import com.app.wan.ui.adapter.SystemListAdapter;
+import com.lib.http.HttpManager;
+import com.lib.http.callback.StringCallback;
+import com.lib.http.error.ErrorModel;
 
 import butterknife.BindView;
 
@@ -35,9 +35,8 @@ public class SystemFragment extends BaseFragment {
 
     @Override
     public void loadData() {
-        HttpManager.get()
+        HttpManager.get(Apis.WAN_SYSTEM_LIST)
                 .tag(this)
-                .url(Apis.WAN_SYSTEM_LIST)
                 .build()
                 .enqueue(new StringCallback<WanSystemBean>() {
                     @Override

@@ -8,13 +8,13 @@ import com.app.wan.R;
 import com.app.wan.api.Apis;
 import com.app.wan.base.BaseFragment;
 import com.app.wan.model.WanBanner;
-import com.app.wan.http.HttpManager;
-import com.app.wan.http.callback.StringCallback;
-import com.app.wan.http.error.ErrorModel;
 import com.app.wan.model.WanHomeBean;
 import com.app.wan.ui.adapter.HomeBannerAdapter;
 import com.app.wan.ui.adapter.HomeRecommendAdapter;
 import com.app.wan.util.ToastUtil;
+import com.lib.http.HttpManager;
+import com.lib.http.callback.StringCallback;
+import com.lib.http.error.ErrorModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -86,9 +86,8 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnL
      */
     private void requestBanner() {
         showLoading();
-        HttpManager.get()
+        HttpManager.get(Apis.WAN_HOME_BANNER)
                 .tag(this)
-                .url(Apis.WAN_HOME_BANNER)
                 .build()
                 .enqueue(new StringCallback<WanBanner>() {
                     @Override
@@ -98,6 +97,12 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnL
 
                     @Override
                     public void onFailure(ErrorModel errorModel) {
+                        ToastUtil.showToast(errorModel.getMessage());
+                    }
+
+                    @Override
+                    public void onAfter(boolean success) {
+                        hideLoading(success);
                     }
                 });
     }
@@ -106,10 +111,8 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnL
      * 请求推荐列表
      */
     private void requestRecommend() {
-        HttpManager.get()
+        HttpManager.get(String.format(Apis.WAN_HOME_LIST, startPage))
                 .tag(this)
-                .url(String.format(Apis.WAN_HOME_LIST, startPage))
-                .acache(true)
                 .build()
                 .enqueue(new StringCallback<WanHomeBean>() {
                     @Override
@@ -119,7 +122,6 @@ public class HomeFragment extends BaseFragment implements OnRefreshListener, OnL
 
                     @Override
                     public void onFailure(ErrorModel errorModel) {
-                        ToastUtil.showToast(errorModel.getMessage());
                     }
 
                     @Override

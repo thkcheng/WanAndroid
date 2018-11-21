@@ -9,13 +9,13 @@ import android.widget.LinearLayout;
 import com.app.wan.R;
 import com.app.wan.api.Apis;
 import com.app.wan.base.BaseActivity;
-import com.app.wan.http.HttpManager;
-import com.app.wan.http.callback.StringCallback;
-import com.app.wan.http.error.ErrorModel;
 import com.app.wan.manager.ImageManager;
 import com.app.wan.model.UserBean;
 import com.app.wan.util.CommonAnimator;
 import com.app.wan.util.ToastUtil;
+import com.lib.http.HttpManager;
+import com.lib.http.callback.StringCallback;
+import com.lib.http.error.ErrorModel;
 
 import java.util.LinkedHashMap;
 
@@ -71,11 +71,11 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login() {
-        LinkedHashMap<String, String> params = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> params = new LinkedHashMap<>();
         params.put("username", etUserName.getText().toString().trim());
         params.put("password", etUserPwd.getText().toString().trim());
-        HttpManager.post()
-                .url(Apis.WAN_LOGIN)
+        HttpManager.post(Apis.WAN_LOGIN)
+                .tag(this)
                 .params(params)
                 .build()
                 .enqueue(new StringCallback<UserBean>() {

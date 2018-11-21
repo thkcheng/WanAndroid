@@ -24,6 +24,7 @@ public class AppStartActivity extends BaseActivity implements SuperTextView.OnDy
     @Override
     public void initView() {
 
+        /*
         //设置动画的动态监听（动画结束后回调）
         superTV.setOnDynamicListener(this);
         //设置动画的动态风格
@@ -32,6 +33,9 @@ public class AppStartActivity extends BaseActivity implements SuperTextView.OnDy
         superTV.setDynamicText("WanAndroid");
         //开始动画
         superTV.start();
+        */
+        startActivity(new Intent(AppStartActivity.this, MainActivity.class));
+        finish();
     }
 
     @Override

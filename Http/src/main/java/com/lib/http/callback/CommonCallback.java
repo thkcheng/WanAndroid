@@ -1,25 +1,23 @@
-package com.app.wan.http.callback;
+package com.lib.http.callback;
 
-import com.app.wan.Logger;
-import com.app.wan.util.ACache;
-import com.app.wan.http.CommonParams;
-import com.app.wan.http.error.ErrorModel;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import com.lib.http.error.ErrorModel;
 
 import okhttp3.Response;
 
 /**
  * 网络请求回调类
- * @param <T> 解析的对象
+ * <p>
+ * 调用顺序如下：
+ * <li>成功：{@link #onBefore} -> {@link #parseResponse} -> {@link #onAfter} -> {@link #onSuccess}</li>
+ * <li>上传：{@link #onBefore} -> {@link #inProgress} -> {@link #parseResponse} -> {@link #onAfter} -> {@link #onSuccess}</li>
+ * <li>失败：{@link #onBefore} -> {@link #onAfter} -> {@link #onFailure}</li>
+ * <li>取消：{@link #onBefore} -> {@link #onAfter}</li>
  *
- * Created by thkcheng on 2018/7/4.
+ * @param <T> 解析的对象
+ *            <p>
+ * Created by thkcheng on 2018/11/21.
  */
 public abstract class CommonCallback<T> {
-
-    protected CommonParams commonParams;
 
     public final static CommonCallback<String> NO_CALLBACK = new StringCallback<String>() {
         @Override
@@ -48,21 +46,13 @@ public abstract class CommonCallback<T> {
     public abstract T parseResponse(Response response) throws Exception;
 
     /**
-     * 解析本地缓存的JSON数据
-     *
-     * @param cacheJson {@link ACache}
-     * @throws Exception
-     */
-    public abstract T parseCacheJson(String cacheJson) throws Exception;
-
-    /**
      * @param response 返回的对象
      * @param obj      可扩展参数
      */
     public abstract void onSuccess(T response, Object... obj);
 
     /**
-     * @param errorModel 错误信息
+     * @param errorModel ErrorModel
      */
     public abstract void onFailure(ErrorModel errorModel);
 
@@ -79,12 +69,11 @@ public abstract class CommonCallback<T> {
      * @param total    总长度
      */
     public void inProgress(float progress, long total) {
-        Logger.i("progress=%f total=%d", progress, total);
     }
 
-    /**
-     * 获取Json对象的类型，因为数据可能是Json数组也可能是Json对象
-     */
+    /**/
+    //获取Json对象的类型，因为数据可能是Json数组也可能是Json对象
+    /*
     public Type getType() {
         Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         if (type instanceof Class) {//如果是Object直接返回
@@ -93,14 +82,5 @@ public abstract class CommonCallback<T> {
             return new TypeToken<T>() {
             }.getType();
         }
-    }
-
-    /**
-     * 网络请求参数
-     *
-     * @param commonParams 请求参数
-     */
-    public void requestCommonParams (CommonParams commonParams) {
-        this.commonParams = commonParams;
-    }
+    }*/
 }

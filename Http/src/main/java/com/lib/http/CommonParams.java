@@ -1,10 +1,9 @@
-package com.app.wan.http;
+package com.lib.http;
 
-import com.app.wan.http.request.GetRequest;
-import com.app.wan.http.request.OKHttpRequest;
-import com.app.wan.http.request.PostFormRequest;
-import com.app.wan.http.request.PostStringRequest;
-import com.app.wan.http.request.RealRequest;
+import com.lib.http.request.GetRequest;
+import com.lib.http.request.OKHttpRequest;
+import com.lib.http.request.PostFormRequest;
+import com.lib.http.request.PostStringRequest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,13 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.MediaType;
-
 /**
+ * Builder模式
  *
- * 公共的请求参数-Builder模式
- *
- * Created by thkcheng on 2018/7/4.
+ * Created by thkcheng on 2018/11/21.
  */
 public class CommonParams {
 
@@ -26,23 +22,27 @@ public class CommonParams {
     public static final String POST_FORM = "POST_FORM";
     public static final String POST_STRING = "POST_STRING";
 
-    // JSON --> application/json;charset=utf-8
-    private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json;charset=utf-8");
-
     private String url;
     private Object tag;
+    private String method;
 
-    private Map<String, String> params;
     private Map<String, String> headers;
-
+    private Map<String, Object> params;
     private List<FileInput> files;
-
     private String content;
-    private MediaType mediaType;
+    private OKHttpRequest okHttpRequest;
 
-    private boolean acache;
-    private int time = 10;
-    private boolean rsa;
+    private CommonParams(Builder builder) {
+        this.url = builder.url;
+        this.tag = builder.tag;
+        this.method = builder.method;
+
+        this.params = builder.params;
+        this.headers = builder.headers;
+        this.files = builder.files;
+        this.content = builder.content;
+        this.okHttpRequest = builder.okHttpRequest;
+    }
 
     public String url() {
         return url;
@@ -52,7 +52,11 @@ public class CommonParams {
         return tag;
     }
 
-    public Map<String, String> params() {
+    public String method() {
+        return method;
+    }
+
+    public Map<String, Object> params() {
         return params;
     }
 
@@ -68,59 +72,49 @@ public class CommonParams {
         return content;
     }
 
-    public MediaType mediaType() {
-        return mediaType;
+    public OKHttpRequest okHttpRequest() {
+        return okHttpRequest;
     }
 
-    public boolean acache() {
-        return acache;
-    }
-
-    public int time() {
-        return time;
-    }
-
-    public boolean rsa() {
-        return rsa;
-    }
-
-    private CommonParams(Builder builder) {
-        this.url = builder.url;
-        this.tag = builder.tag;
-        this.params = builder.params;
-        this.headers = builder.headers;
-
-        this.files = builder.files;
-        this.content = builder.content;
-        this.mediaType = builder.mediaType;
-
-        this.acache = builder.acache;
-        this.time = builder.time;
-        this.rsa = builder.rsa;
+    public Builder newBuilder() {
+        return new Builder(this);
     }
 
     public static final class Builder {
         private String url;
         private Object tag;
+        private String method;
+
         private Map<String, String> headers;
-        private Map<String, String> params;
-        private List<FileInput> files = new ArrayList<>();
+        private Map<String, Object> params;
+        private List<FileInput> files;
         private String content;
-        private MediaType mediaType;
         private OKHttpRequest okHttpRequest;
-        private boolean acache; //是否启用时效缓存
-        private int time = 10;  //缓存有效时间
-        private boolean rsa;    //是否启用参数加密
+
+        public Builder() {
+        }
 
         public Builder(String method) {
+            this.method = method;
             if (POST_FORM.equals(method)) {
                 this.okHttpRequest = new PostFormRequest();
             } else if (POST_STRING.equals(method)) {
-                mediaType = MEDIA_TYPE_JSON;
                 this.okHttpRequest = new PostStringRequest();
             } else {
                 this.okHttpRequest = new GetRequest();
             }
+        }
+
+        private Builder(CommonParams commonParams) {
+            this.url = commonParams.url;
+            this.tag = commonParams.tag;
+            this.method = commonParams.method;
+
+            this.params = commonParams.params;
+            this.headers = commonParams.headers;
+            this.files = commonParams.files;
+            this.content = commonParams.content;
+            this.okHttpRequest = commonParams.okHttpRequest;
         }
 
         public Builder url(String url) {
@@ -133,7 +127,7 @@ public class CommonParams {
             return this;
         }
 
-        public Builder params(Map<String, String> params) {
+        public Builder params(Map<String, Object> params) {
             this.params = params;
             return this;
         }
@@ -160,6 +154,9 @@ public class CommonParams {
         }
 
         public Builder files(String name, String filename, File file) {
+            if (files == null) {
+                files = new ArrayList<>();
+            }
             files.add(new FileInput(name, filename, file));
             return this;
         }
@@ -169,35 +166,15 @@ public class CommonParams {
             return this;
         }
 
-        public Builder mediaType(MediaType mediaType) {
-            this.mediaType = mediaType;
-            return this;
-        }
-
-        public Builder acache(boolean acache) {
-            this.acache = acache;
-            return this;
-        }
-
-        public Builder acache(boolean acache, int time) {
-            this.acache = acache;
-            this.time = time;
-            return this;
-        }
-
-        public Builder rsa(boolean rsa) {
-            this.rsa = rsa;
-            return this;
+        public CommonParams newCommonParams() {
+            return new CommonParams(this);
         }
 
         public RealRequest build() {
-            if (this.params == null) {
-                params = new LinkedHashMap<>();
-            }
-            return okHttpRequest.build(new CommonParams(this));
+            return new RealRequest(okHttpRequest, new CommonParams(this));
         }
-
     }
+
 
     public static final class FileInput {
         public String key;

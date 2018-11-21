@@ -1,8 +1,9 @@
-package com.app.wan.http.request;
+package com.lib.http.request;
 
-import com.app.wan.http.CommonParams;
-import com.app.wan.http.HandlerMain;
-import com.app.wan.http.callback.CommonCallback;
+import com.lib.http.CommonParams;
+import com.lib.http.callback.CommonCallback;
+import com.lib.http.utils.HttpHandler;
+import com.lib.http.utils.Util;
 
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -17,73 +18,68 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 /**
- * @author Starry Jerry
- * @since 2016/6/19.
+ * Created by thkcheng on 2018/11/21.
  */
 public class PostFormRequest extends OKHttpRequest {
-
     @Override
-    protected RequestBody buildRequestBody() {
+    protected RequestBody buildRequestBody(CommonParams commonParams) {
+        Map<String, Object> params = commonParams.params();
         List<CommonParams.FileInput> files = commonParams.files();
-        Map<String, String> params = commonParams.params();
         if (files == null || files.isEmpty()) {
             FormBody.Builder builder = new FormBody.Builder();
-            //add-params
-            for (String key : params.keySet()) {
-                builder.add(key, params.get(key));
+            if (params != null && !params.isEmpty()) {
+                for (String key : params.keySet()) {
+                    String value = Util.convert(params.get(key));
+                    builder.add(key, value);
+                }
             }
             return builder.build();
-        } else {
+        }else {
             MultipartBody.Builder builder = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM);
-            addParams(builder, params);
+            if (params != null && !params.isEmpty()) {
+                for (String key : params.keySet()) {
+                    String value = Util.convert(params.get(key));
+                    builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + key + "\""),
+                            RequestBody.create(null, value));
+                }
+            }
 
             for (int i = 0; i < files.size(); i++) {
                 CommonParams.FileInput fileInput = files.get(i);
-                RequestBody fileBody = RequestBody.create(MediaType.parse(guessMimeType(fileInput.filename)), fileInput.file);
+                RequestBody fileBody = RequestBody.create(getMediaType(fileInput.filename), fileInput.file);
                 builder.addFormDataPart(fileInput.key, fileInput.filename, fileBody);
             }
             return builder.build();
         }
     }
 
-    private void addParams(MultipartBody.Builder builder, Map<String, String> params) {
-        if (params != null && !params.isEmpty()) {
-            for (String key : params.keySet()) {
-                builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + key + "\""),
-                        RequestBody.create(null, params.get(key)));
-            }
-        }
-    }
-
-    private String guessMimeType(String path) {
+    private MediaType getMediaType(String path) {
         FileNameMap fileNameMap = URLConnection.getFileNameMap();
         String contentTypeFor = fileNameMap.getContentTypeFor(path);
         if (contentTypeFor == null) {
             contentTypeFor = "application/octet-stream";
         }
-        return contentTypeFor;
+        return MediaType.parse(contentTypeFor);
     }
 
-    protected RequestBody wrapRequestBody(RequestBody requestBody) {
+    protected RequestBody wrapRequestBody(RequestBody requestBody, final CommonCallback callback) {
         return new CountingRequestBody(requestBody, new CountingRequestBody.Listener() {
             @Override
             public void onRequestProgress(final long bytesWritten, final long contentLength) {
-
-                HandlerMain.getHandler().post(new Runnable() {
+                HttpHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        CommonCallback.NO_CALLBACK.inProgress(bytesWritten * 1.0f / contentLength, contentLength);
+                        callback.inProgress(bytesWritten * 1.0f / contentLength, contentLength);
                     }
                 });
-
             }
         });
     }
 
-    @Override
-    protected Request buildRequest(RequestBody requestBody) {
-        return requestBuilder.post(requestBody).build();
-    }
 
+    @Override
+    protected Request buildRequest(Request.Builder builder, RequestBody requestBody) {
+        return builder.post(requestBody).build();
+    }
 }

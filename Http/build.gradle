@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
+
 def androidCode = rootProject.ext.android
+def libList = rootProject.ext.dependencies
+
 android {
     compileSdkVersion androidCode.compileSdkVersion
     buildToolsVersion androidCode.buildToolsVersion
@@ -11,4 +14,7 @@ android {
 }
 
 dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation libList.okhttp3
+    implementation libList.support
 }

@@ -5,18 +5,14 @@ import android.support.v4.view.ViewPager;
 import com.app.wan.R;
 import com.app.wan.api.Apis;
 import com.app.wan.base.BaseFragment;
-import com.app.wan.http.HttpManager;
-import com.app.wan.http.callback.StringCallback;
-import com.app.wan.http.error.ErrorModel;
 import com.app.wan.model.WanNaviBean;
 import com.app.wan.ui.adapter.NaviViewPagerAdapter;
-
-import java.util.List;
+import com.lib.http.HttpManager;
+import com.lib.http.callback.StringCallback;
+import com.lib.http.error.ErrorModel;
 
 import butterknife.BindView;
 import q.rorbin.verticaltablayout.VerticalTabLayout;
-import q.rorbin.verticaltablayout.adapter.TabAdapter;
-import q.rorbin.verticaltablayout.widget.ITabView;
 
 public class NavigationFragment extends BaseFragment {
 
@@ -46,9 +42,8 @@ public class NavigationFragment extends BaseFragment {
 
     @Override
     public void loadData() {
-        HttpManager.get()
+        HttpManager.get(Apis.WAN_NAVI_LIST)
                 .tag(this)
-                .url(Apis.WAN_NAVI_LIST)
                 .build()
                 .enqueue(new StringCallback<WanNaviBean>() {
                     @Override

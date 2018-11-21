@@ -1,21 +1,18 @@
-package com.app.wan.http.callback;
+package com.lib.http.callback;
 
-import com.app.wan.http.HandlerMain;
+import com.lib.http.utils.HttpHandler;
+import com.lib.http.utils.Util;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
- * 文件下载回调
- *
- * @author Starry Jerry
- * @since 2018/7/1.
+ * Created by thkcheng on 2018/11/21.
  */
-
 public abstract class FileCallback extends CommonCallback<File> {
 
     /**
@@ -42,10 +39,12 @@ public abstract class FileCallback extends CommonCallback<File> {
      * save file
      */
     private File saveFile(Response response) throws Exception {
+        //获取目录
         File dir = new File(destFileDir);
         if (!dir.exists()) {
             dir.mkdirs();
         }
+        //删除旧文件
         File file = new File(dir, destFileName);
         if (file.exists()) {
             file.delete();
@@ -57,15 +56,17 @@ public abstract class FileCallback extends CommonCallback<File> {
         InputStream is = null;
         FileOutputStream fos = null;
         try {
-            is = response.body().byteStream();
-            final long total = response.body().contentLength();
+            ResponseBody body = response.body();
+            Util.checkNotNull(body);
+            is = body.byteStream();
+            final long total = body.contentLength();
 
             fos = new FileOutputStream(file);
             while ((len = is.read(buf)) != -1) {
                 sum += len;
                 fos.write(buf, 0, len);
                 final long finalSum = sum;
-                HandlerMain.getHandler().post(new Runnable() {
+                HttpHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         inProgress(finalSum * 1.0f / total, total);
@@ -75,24 +76,16 @@ public abstract class FileCallback extends CommonCallback<File> {
             fos.flush();
             return file;
         } catch (Exception ex) {
+            //下载出错，删除文件
             if (file.exists()) {
                 file.delete();
             }
             throw ex;
         } finally {
-            close(is);
-            close(response);
-            close(fos);
+            Util.closeQuietly(is);
+            Util.closeQuietly(response);
+            Util.closeQuietly(fos);
         }
     }
 
-    private void close(Closeable closeable) {
-        try {
-            if (closeable != null) {
-                closeable.close();
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 }

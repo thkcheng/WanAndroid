@@ -31,7 +31,7 @@ public class HomeBannerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return bannerList == null ? 0 : bannerList.size();
+        return bannerList == null ? 0 : Integer.MAX_VALUE;
     }
 
     @Override
